@@ -1,7 +1,14 @@
+#include "piece.h"
 #include "queen.h"
 #include <iostream>
 
 using namespace std;
+
+Queen::Queen()
+{
+    x = 0;
+    y = 0;
+}
 
 int Queen::getYPosition()
 {
@@ -13,47 +20,25 @@ int Queen::getXPosition()
     return x;
 }
 
-bool Queen::checkDiagonal(int x, int y, int board[8][8])
+bool Queen::checkDiagonal(int col, int row, int board[8][8])
 {
-    int i, j;
-    //checking up-left
-    for(i = x, j = y; i >= 0 && j >= 0; i--, j--)
-    {
-    }
-
-    //checking down-right
-    for(i = x, j = y; i < 8 && j < 8; i++, j++)
-    {
-    }
-
-    //checking down-left
-    for(i = x, j = y; i >= 0 && j < 8; i--, j++)
-    {
-    }
-
-    //checking up-right
-    for(i = x, j = y; i < 8 && j >= 0; i++, j--)
-    {
-    }
+    int rise, run;
+    rise = y - row;
+    run = x - col;
+    return(rise/run == 1);
 }
 
-bool Queen::checkVertical(int x, int board[8][8])
+bool Queen::checkVertical(int col, int board[8][8])
 {
-    for(int i = 0; i < 8; i++)
-    {
-
-    }
+    return(x == col);
 }
 
-bool Queen::checkHorizontal(int board[8][8])
+bool Queen::checkHorizontal(int row, int board[8][8])
 {
-    for(int j = 0; j < 8; j++)
-    {
-
-    }
+    return(y == row);
 }
 
-bool Queen::isMoveValid(int x,int y, int board[8][8])
+bool Queen::isMoveValid(int col,int row, int board[8][8])
 {
-    return (checkDiagonal(x, y, board) && checkHorizontal(x, y, board) && checkVertical(x, y, board));
+    return (checkDiagonal(col, row, board) && checkHorizontal(row, board) && checkVertical(col, board));
 }
