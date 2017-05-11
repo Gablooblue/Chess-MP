@@ -5,7 +5,7 @@ Bishop::Bishop()
 
 }
 
-bool Bishop::isMoveValid(int col, int row, int board[8][8])
+bool Bishop::isMoveValid(int col, int row, Tile board[8][8])
 {
     return (checkDiagonal(col, row, board));
 }

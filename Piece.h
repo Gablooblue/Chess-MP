@@ -1,3 +1,4 @@
+#include "Tile.h"
 using namespace std;
 
 class Piece
@@ -8,7 +9,7 @@ class Piece
 	void movePiece(int x, int y);
 	void setXPosition(int coordinate);
 	void setYPosition(int coordinate);
-	bool isMoveValid(int x, int y, int board[8][8]);
+	bool isMoveValid(int x, int y, Tile board[8][8]);
     protected:
 	int x, y;
 	char color;

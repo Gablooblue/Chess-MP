@@ -20,7 +20,7 @@ int Queen::getXPosition()
     return x;
 }
 
-bool Queen::checkDiagonal(int col, int row, int board[8][8])
+bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 {
     int rise, run;
     rise = y - row;
@@ -32,17 +32,17 @@ bool Queen::checkDiagonal(int col, int row, int board[8][8])
     return(abs(rise/run) == 1);
 }
 
-bool Queen::checkVertical(int col, int board[8][8])
+bool Queen::checkVertical(int col, Tile board[8][8])
 {
     return(x == col);
 }
 
-bool Queen::checkHorizontal(int row, int board[8][8])
+bool Queen::checkHorizontal(int row, Tile board[8][8])
 {
     return(y == row);
 }
 
-bool Queen::isMoveValid(int col,int row, int board[8][8])
+bool Queen::isMoveValid(int col,int row, Tile board[8][8])
 {
     return (checkDiagonal(col, row, board) && checkHorizontal(row, board) && checkVertical(col, board));
 }
