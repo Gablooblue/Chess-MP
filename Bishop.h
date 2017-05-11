@@ -1,7 +1,7 @@
 #include "Queen.h"
 using namespace std;
 
-class Bishop: Queen
+class Bishop: public Queen
 {
     public: 
 	Bishop();

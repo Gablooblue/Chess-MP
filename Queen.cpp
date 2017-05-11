@@ -1,4 +1,5 @@
 #include "Queen.h"
+#include <cmath>
 #include <iostream>
 
 using namespace std;
@@ -24,7 +25,11 @@ bool Queen::checkDiagonal(int col, int row, int board[8][8])
     int rise, run;
     rise = y - row;
     run = x - col;
-    return(rise/run == 1);
+    if(run == 0)
+    {
+	return false;
+    }
+    return(abs(rise/run) == 1);
 }
 
 bool Queen::checkVertical(int col, int board[8][8])
