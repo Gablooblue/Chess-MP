@@ -1,5 +1,4 @@
-#include "piece.h"
-#include "queen.h"
+#include "Queen.h"
 #include <iostream>
 
 using namespace std;

@@ -3,12 +3,6 @@
 
 using namespace std;
 
-Piece::Piece()
-{
-    x = 0; 
-    y = 0;
-}
-
 void Piece::setXPosition(int coordinate)
 {
     x = coordinate;

@@ -3,7 +3,6 @@ using namespace std;
 class Piece
 {
     public:
-	Piece();
 	virtual int getYPosition() = 0;
 	virtual int getXPosition() = 0;
 	void movePiece(int x, int y);
