@@ -6,17 +6,15 @@ using namespace std;
 
 Queen::Queen()
 {
-    x = 0;
-    y = 0;
     value = 9;
 }
 
-int Piece::getYPosition()
+int Queen::getYPosition()
 {
     return y;
 }
 
-int Piece::getXPosition()
+int Queen::getXPosition()
 {
     return x;
 }

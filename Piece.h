@@ -1,7 +1,9 @@
+#ifndef PIECE_H
+#define PIECE_H
+
 using namespace std;
 
-class Tile; 
-
+class Tile;
 class Piece
 {
     public:
@@ -19,3 +21,4 @@ class Piece
 	char color;
 };
 
+#endif

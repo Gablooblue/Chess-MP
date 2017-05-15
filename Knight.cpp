@@ -6,7 +6,7 @@ using namespace std;
 
 Knight::Knight()
 {
-    value = 3;
+    this->value = 3;
 }
 
 bool Knight::isMoveValid(int col, int row, Tile  board[8][8])
@@ -17,8 +17,8 @@ bool Knight::isMoveValid(int col, int row, Tile  board[8][8])
 bool Knight::checkMove(int col, int row, Tile  board[8][8])
 {
    int rise, run;
-   rise = abs(y -row);
-   run = abs(x - col);
+   rise = abs(this->y -row);
+   run = abs(this->x - col);
    return(rise == 3 || rise == 1 && run == 3 || run == 1);
 }
 

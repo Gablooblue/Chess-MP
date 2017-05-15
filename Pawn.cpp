@@ -8,6 +8,15 @@ Pawn::Pawn()
     value = 1;
 }
 
+int Pawn::getXPosition() 
+{
+    return x;
+}
+
+int Pawn::getYPosition() 
+{
+    return y;
+}
 bool Pawn::isMoveValid(int col, int row, Tile board[8][8])
 {
     return(canMove(col, row, board) ||
