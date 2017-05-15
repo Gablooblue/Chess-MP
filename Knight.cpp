@@ -6,15 +6,15 @@ using namespace std;
 
 Knight::Knight()
 {
-
+    value = 3;
 }
 
-bool Knight::isMoveValid(int col, int row, Tile board[8][8])
+bool Knight::isMoveValid(int col, int row, Tile  board[8][8])
 {
     return(checkMove(col, row, board));
 }
 
-bool Knight::checkMove(int col, int row, Tile board[8][8])
+bool Knight::checkMove(int col, int row, Tile  board[8][8])
 {
    int rise, run;
    rise = abs(y -row);

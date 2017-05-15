@@ -5,6 +5,7 @@ using namespace std;
 
 Rook::Rook()
 {
+    value = 5;
 }
 
 bool Rook::isMoveValid(int col, int row, Tile board[8][8])

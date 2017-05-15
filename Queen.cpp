@@ -8,14 +8,15 @@ Queen::Queen()
 {
     x = 0;
     y = 0;
+    value = 9;
 }
 
-int Queen::getYPosition()
+int Piece::getYPosition()
 {
     return y;
 }
 
-int Queen::getXPosition()
+int Piece::getXPosition()
 {
     return x;
 }

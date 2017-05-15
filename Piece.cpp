@@ -1,4 +1,5 @@
 #include "Piece.h"
+#include "Tile.h"
 #include <iostream>
 
 using namespace std;
@@ -19,23 +20,19 @@ void Piece::movePiece(int x, int y)
     setYPosition(y);
 }
 
-void Piece::getYPosition()
-{
-    return y;
-}
-
-void Piece::getXPosition()
-{
-    return x;
-}
-
 void Piece::setColor(char c)
 {
     color = c;
 }
 
-void Piece::getColor()
+char Piece::getColor()
 {
     return color;
+}
+
+void Piece::deletePiece()
+{
+    x = -1;
+    y = -1;
 }
 

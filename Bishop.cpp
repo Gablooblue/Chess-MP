@@ -2,7 +2,7 @@
 
 Bishop::Bishop()
 {
-
+    value = 3;
 }
 
 bool Bishop::isMoveValid(int col, int row, Tile board[8][8])
