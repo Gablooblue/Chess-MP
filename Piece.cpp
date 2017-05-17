@@ -4,6 +4,16 @@
 
 using namespace std;
 
+int Piece::getXPosition()
+{
+    return x;
+}
+
+int Piece::getYPosition()
+{
+    return y;
+}
+
 void Piece::setXPosition(int coordinate)
 {
     x = coordinate;
@@ -36,3 +46,7 @@ void Piece::deletePiece()
     y = -1;
 }
 
+char Piece::getSymbol()
+{
+    return symbol;
+}

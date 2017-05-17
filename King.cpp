@@ -7,19 +7,17 @@ using namespace std;
 King::King()
 {
     value = 1000000;
+    symbol = 'K';
 }
 
-int King::getXPosition()
+bool King::isCheckmated(Tile board[8][8])
 {
-    return x;
+    //TODO
 }
-int King::getYPosition()
-{
-    return y;
-}
+
 bool King::isInCheck(int col, int row, Tile board[8][8])
 {
-    //Do this later 
+    //TODO
 }
 
 bool King::isMoveValid(int col, int row, Tile board[8][8])

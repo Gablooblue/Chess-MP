@@ -8,10 +8,9 @@ class King: public Piece
 {
     public:
 	King();
-	int getXPosition();
-	int getYPosition();
 	bool isInCheck(int col, int row, Tile board[8][8]);
 	bool isMoveValid(int col, int row, Tile board[8][8]);
+	bool isCheckmated(Tile board[8][8]);
 
 
 };

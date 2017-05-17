@@ -16,8 +16,8 @@ class Tile
 	int getYCoordinates();
 	void setValue(int val);
 	int getValue();
-    private:
 	Piece* occupier;
+    private:
 	int x,y, value;
 	
 };

@@ -8,8 +8,6 @@ class Queen: public Piece
 {
     public: 
 	Queen();
-	int getYPosition();
-	int getXPosition();
 	bool checkDiagonal(int x, int y, Tile board[8][8]);
 	bool checkHorizontal(int y, Tile board[8][8]);
 	bool checkVertical(int x, Tile board[8][8]);

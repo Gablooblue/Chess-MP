@@ -6,6 +6,7 @@ using namespace std;
 Pawn::Pawn()
 {
     value = 1;
+    symbol = 'P';
 }
 
 int Pawn::getXPosition() 

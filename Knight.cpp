@@ -6,7 +6,9 @@ using namespace std;
 
 Knight::Knight()
 {
-    this->value = 3;
+    value = 3;
+    symbol = 'H';
+
 }
 
 bool Knight::isMoveValid(int col, int row, Tile  board[8][8])
@@ -17,8 +19,8 @@ bool Knight::isMoveValid(int col, int row, Tile  board[8][8])
 bool Knight::checkMove(int col, int row, Tile  board[8][8])
 {
    int rise, run;
-   rise = abs(this->y -row);
-   run = abs(this->x - col);
+   rise = abs(y -row);
+   run = abs(x - col);
    return(rise == 3 || rise == 1 && run == 3 || run == 1);
 }
 

@@ -7,16 +7,8 @@ using namespace std;
 Queen::Queen()
 {
     value = 9;
-}
+    symbol = 'Q';
 
-int Queen::getYPosition()
-{
-    return y;
-}
-
-int Queen::getXPosition()
-{
-    return x;
 }
 
 bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
