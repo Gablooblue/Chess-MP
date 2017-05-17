@@ -4,9 +4,12 @@
 using namespace std;
 
 class Tile;
+
 class Piece
 {
     public:
+	Piece();
+	virtual bool isMoveValid(int x, int y, Tile board[8][8]) = 0;
 	int getYPosition();
 	int getXPosition();
 	void movePiece(int x, int y);
@@ -14,7 +17,6 @@ class Piece
 	void setYPosition(int coordinate);
 	void deletePiece();
 	void setColor(char c);
-	virtual bool isMoveValid(int x, int y, Tile board[8][8]);
 	char getSymbol();
 	char getColor();
     protected:

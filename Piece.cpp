@@ -4,6 +4,10 @@
 
 using namespace std;
 
+Piece::Piece()
+{
+    symbol = ' ';
+}
 int Piece::getXPosition()
 {
     return x;
