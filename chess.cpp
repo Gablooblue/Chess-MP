@@ -7,6 +7,7 @@
 #include "Knight.h"
 
 #include <iostream>
+#include <stdio.h>
 #include <string>
 
 using namespace std;
@@ -30,8 +31,10 @@ void menu()
     do
     {
 	cout << "[1] Start"
-	     << "[4] Quit";
+	     << "[4] Quit"
+	     << endl;
 	cin >> input;
+	getchar();
 	switch (input)
 	{
 	    case 1: start();
@@ -140,6 +143,7 @@ void setupBoard(Tile board[8][8])
 
 void printBoard(Tile board[8][8])
 {
+    cout << " 1 2 3 4 5 6 7 8" << endl;
     cout << "-----------------" << endl;
     for(int i = 0; i < 8; i++)
     {
@@ -159,14 +163,15 @@ void printBoard(Tile board[8][8])
     }
 }
 
-bool movePiece(int ini_col, int fin_col,int ini_row,int fin_row, Tile board[8][8])
+bool movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
 {
+    cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row;
     if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board)) 
     {
 	if(board[fin_row][fin_col].occupier != NULL)
 	{
 	    board[fin_row][fin_col].removePiece();
-	    cout << "Piece eaten";
+	    cout << "Piece eaten" << endl;
 	}
 	board[fin_row][fin_col].setPiece(board[ini_row][ini_col].occupier);
 	board[ini_row][ini_col].removePiece();
@@ -183,25 +188,25 @@ void askForMove(Tile board[8][8])
     string select, place;
     cout << "Pick a piece to move: ";
     getline(cin, select);
-    ini_y = translate(select[0]);
-    ini_x = translate(select[1]);
-    if(board[8][8].occupier == NULL)
+    ini_x = translate(select[0]);
+    ini_y = translate(select[1]);
+    if(board[ini_y][ini_x].occupier == NULL)
     {
-	cout << "No piece in the space";
+	cout << "No piece in the space" << endl;
 	return;
     }
     cout << "Pick where to move the piece: ";
     getline(cin, place);
-    fin_y = translate(place[0]);
-    fin_x = translate(place[1]);
-    movePiece(ini_x, ini_y, fin_x, ini_y, board);
+    fin_x = translate(place[0]);
+    fin_y = translate(place[1]);
+    movePiece(ini_y, ini_x, fin_y, fin_x, board);
 }
 
 int translate(char input)
 {
     int ascii_value;
     
-    ascii_value = input - '0';
+    ascii_value = input - '0' - 1;
     if(ascii_value > 10)
     {
 	ascii_value = tolower(input) - '0' - 49;

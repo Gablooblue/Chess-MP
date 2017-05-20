@@ -45,3 +45,8 @@ int Tile::getValue()
 {
     return value;
 }
+
+bool Tile::isOccupied()
+{
+    return(occupier == NULL);
+}
