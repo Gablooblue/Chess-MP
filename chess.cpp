@@ -16,7 +16,7 @@ void menu();
 void start();
 void setupBoard(Tile board[8][8]);
 void printBoard(Tile board[8][8]);
-bool movePiece(int ini_col,int ini_row, int fin_col,int fin_row, Tile board[8][8]);
+void movePiece(int ini_col,int ini_row, int fin_col,int fin_row, Tile board[8][8]);
 void askForMove(Tile board[8][8]);
 int translate(char input);
 
@@ -151,9 +151,10 @@ void printBoard(Tile board[8][8])
 	for(int j = 0; j < 8; j++)
 	{
 	    if(board[i][j].occupier != NULL)
-		cout << board[i][j].occupier->getSymbol();
+
+		cout << board[i][j].occupier->getColor() << board[i][j].occupier->getSymbol();
 	    else
-		cout << ' ';
+		cout << "  ";
 	    cout << '|';
 	}
 	cout << endl;
@@ -163,9 +164,9 @@ void printBoard(Tile board[8][8])
     }
 }
 
-bool movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
+void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
 {
-    cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row;
+    cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row << endl;
     if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board)) 
     {
 	if(board[fin_row][fin_col].occupier != NULL)
@@ -178,7 +179,7 @@ bool movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
     }
     else 
     {
-	return false;
+	cout << "Move invalid";
     }
 }
 
@@ -188,8 +189,8 @@ void askForMove(Tile board[8][8])
     string select, place;
     cout << "Pick a piece to move: ";
     getline(cin, select);
-    ini_x = translate(select[0]);
-    ini_y = translate(select[1]);
+    ini_y = translate(select[0]);
+    ini_x = translate(select[1]);
     if(board[ini_y][ini_x].occupier == NULL)
     {
 	cout << "No piece in the space" << endl;
@@ -197,9 +198,9 @@ void askForMove(Tile board[8][8])
     }
     cout << "Pick where to move the piece: ";
     getline(cin, place);
-    fin_x = translate(place[0]);
-    fin_y = translate(place[1]);
-    movePiece(ini_y, ini_x, fin_y, fin_x, board);
+    fin_y = translate(place[0]);
+    fin_x = translate(place[1]);
+    movePiece(ini_x, ini_y, fin_x, fin_y, board);
 }
 
 int translate(char input)

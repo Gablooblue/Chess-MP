@@ -54,3 +54,9 @@ char Piece::getSymbol()
 {
     return symbol;
 }
+
+void Piece::setCoordinates(int col, int row)
+{
+    x = col;
+    y = row;
+}

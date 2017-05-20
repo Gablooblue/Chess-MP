@@ -23,75 +23,91 @@ int Pawn::getYPosition()
 }
 bool Pawn::isMoveValid(int col, int row, Tile board[8][8])
 {
-    return(canMove(col, row, board) ||
-    canEat(col, row, board));
+    if(board[row][col].isOccupied())
+    {
+	return canEat(col, row, board);
+    }
+    else
+    {
+	return canMove(col, row, board);
+    }
 }
 
 bool Pawn::canMove(int col, int row, Tile board[8][8])
 {
-    if(color == 'W')
+    cout << "color: " << color << endl;
+    int deltaY = 0;
+    deltaY = abs(y - row );
+    cout << "deltaY: " <<  deltaY << endl;
+    if(color == 'W' && col == x)
     {
-	if(!hasMoved())
+	if(!moved)
 	{
-	    return(row == y + 1 || row == y + 2 && col == x);
+	    moved = true;
+	    return(deltaY == 1|| deltaY == 2);
 	}
 	else
 	{
-	    return(row == y + 1 && col == x);
+	    return(deltaY == 1);
 	}
     }
-    else if(color == 'B')
+    else if(color == 'B' && col == x)
     {
-	if(!hasMoved())
+	if(!moved)
 	{
-	    return(row == y - 1 || row == y - 2 && col == x);
+	    moved = true;
+	    return(deltaY == 1 || deltaY == 2);
 	}
 	else
 	{
-	    return(row == y - 1 && col == x);
+	    return(deltaY == 1);
 	}
-
     }
 }
 
 bool Pawn::canEat(int col, int row, Tile board[8][8])
 {
-    int deltaX = abs(col -x);
-    int deltaY = abs(row-y);
+    float deltaX = abs(col -x);
+    cout << "deltax: " << deltaX << endl;
+    float deltaY = abs(row-y);
+    cout << "deltay: " << deltaY << endl;
     if(deltaX == 0)
     {
 	return false;
     }
-    int slope = deltaY/deltaX;
-    if(slope == 1)
+    float slope = deltaY/deltaX;
+    cout << "Slope: " << slope << endl;
+    if(slope == 1.0)
     { 
 	if(board[row][col].isOccupied());
 	{
 	    if(color == 'W')
 	    {
-		if(row - y == 1)
+		if(row - y == -1)
 		{
-		    if(board[row][col].occupier->getColor()== 'B') //if piece is white and if enemy color is black 
-		    {
-			return true;
-		    }
+		    return(board[row][col].occupier->getColor()== 'B'); //if piece is white and if enemy color is black 
+		}
+		else
+		{
+		    return false;
 		}
 	    }
 	    if(color == 'B')
 	    {
-		if(row - y == -1)
+		if(row - y == 1)
 		{
-		    if(board[row][col].occupier->getColor() == 'W') //if piece is black and if enemy color is white
-		    {
-			return true;
-		    }
+		    return (board[row][col].occupier->getColor() == 'W'); //if piece is black and if enemy color is white
+		}
+		else
+		{
+		    return false;
 		}
 	    }
-	    else
-	    {
-		return false;
-	    }
 	}
+    }
+    else
+    {
+	return false;
     }
 }
 
@@ -102,5 +118,5 @@ bool Pawn::hasMoved()
 
 bool Pawn::setMoved()
 {
-    moved == true;
+    moved = true;
 }

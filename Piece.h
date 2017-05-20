@@ -15,6 +15,7 @@ class Piece
 	void movePiece(int x, int y);
 	void setXPosition(int coordinate);
 	void setYPosition(int coordinate);
+	void setCoordinates(int col, int row);
 	void deletePiece();
 	void setColor(char c);
 	char getSymbol();

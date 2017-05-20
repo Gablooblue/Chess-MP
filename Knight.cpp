@@ -11,17 +11,25 @@ Knight::Knight()
 
 }
 
-bool Knight::isMoveValid(int col, int row, Tile  board[8][8])
+bool Knight::isMoveValid(int col, int row, Tile board[8][8])
 {
     return(checkMove(col, row, board));
 }
 
-bool Knight::checkMove(int col, int row, Tile  board[8][8])
+bool Knight::checkMove(int col, int row, Tile board[8][8])
 {
-   int rise, run;
-   rise = abs(y -row);
-   run = abs(x - col);
-   return(rise == 3 || rise == 1 && run == 3 || run == 1);
+   float rise, run;
+   rise = abs(this->y - row);
+   cout << "Rise: " << rise << endl << y << "-" << row;
+   run = abs(this->x - col);
+   cout << "Run: " << run << endl;
+   if(run == 0)
+   {
+       return false;
+   }
+   float slope = abs(rise/run);
+   cout << "slope: " << slope << endl;
+   return(slope == 0.5 || slope == 2 );
 }
 
 

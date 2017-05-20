@@ -13,6 +13,7 @@ Tile::Tile()
 void Tile::setPiece(Piece* p)
 {
     occupier = p;
+    occupier->setCoordinates(x, y);
 }
 
 void Tile::removePiece()
@@ -22,8 +23,8 @@ void Tile::removePiece()
 
 void Tile::setCoordinates(int col, int row)
 {
-    x = col;
-    y = row;
+    y = col;
+    x = row;
 }
 
 int Tile::getXCoordinates()
@@ -48,5 +49,6 @@ int Tile::getValue()
 
 bool Tile::isOccupied()
 {
-    return(occupier == NULL);
+    return(occupier != NULL);
 }
+
