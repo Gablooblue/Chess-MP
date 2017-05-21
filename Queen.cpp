@@ -26,37 +26,27 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 
 bool Queen::checkVertical(int col, int row, Tile board[8][8])
 {
-    /*for(int i = 0; i < abs(row - y); i++)
+    /*
+    int delta;
+    delta = abs(row-y);
+    cout << "Delta: " << delta << endl;
+    for(int i = 0; i < delta; i++ )
     {
-	if(board[y+ i][col].isOccupied() && board[row + i][col].occupier->getColor() == color)
+	cout << "Checking " << col << " " << row + i;
+	if(row + i >= 8)
+	    continue;
+	if(board[row + i][col].isOccupied() && board[row + i][col].occupier->getColor() == color)
 	{
+	    cout << "Space occupied" << endl;
 	    return false;
 	}
     }*/
-    if(row < y)
-    {
-	for(int i = 1; i < y; i++)
-	{
-	    if(board[row + i][col].isOccupied())
-	    {
-		return false;
-	    }
-	}
-    }
-    else if(row > y)
-    {
-	for(int i = 1; i < row; i++ )
-	{
-	    if(board[y + i][col].isOccupied())
-	    {
-		return false;
-	    }
-	}
-    }
+
+    //TODO pls fix this shit idk why my mind isn't working ty
     return(x == col);
 }
 
-bool Queen::checkHorizontal(int row, int col, Tile board[8][8])
+bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 {
     return(y == row);
 }
