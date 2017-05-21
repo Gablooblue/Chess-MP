@@ -116,7 +116,57 @@ bool Pawn::hasMoved()
     return moved;
 }
 
-bool Pawn::setMoved()
+void Pawn::setMoved()
 {
     moved = true;
+}
+
+void Pawn::promotion(int col, int row, Tile board[8][8])
+{
+    char chosen_piece;
+    do
+    {
+	cout << "Pawn can be promoted, what do you want to promote it to?"
+	     << endl
+	     << "Choices: Q, B, H, R" 
+	     << endl;
+	cin >> chosen_piece;
+	chosen_piece = toupper(chosen_piece);
+    }
+    while
+    (chosen_piece != 'Q' || chosen_piece != 'R' || chosen_piece != 'B' 
+	    || chosen_piece != 'R');
+
+    cout << "Changing P to " << chosen_piece << endl;
+
+    {
+	board[row][col].removePiece();
+	if(chosen_piece == 'Q')
+	{
+		Queen* newQueen = new Queen;
+		board[row][col].setPiece(newQueen);
+	}
+	else if(chosen_piece == 'H')
+	{
+		Knight* newKnight = new Knight;
+		board[row][col].setPiece(newKnight);
+	}
+	else if(chosen_piece =='B')
+	{
+		Bishop* newBishop = new Bishop;
+		board[row][col].setPiece(newBishop);
+	}
+	else if(chosen_piece == 'R')
+	{
+		Rook* newRook = new Rook;
+		board[row][col].setPiece(newRook);
+	}
+	else	
+	{
+		cout << "Error in character input" << endl;
+		Pawn* newPawn = new Pawn;
+		newPawn->setMoved();
+		board[row][col].setPiece(newPawn);
+	}	
+    }
 }

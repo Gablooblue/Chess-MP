@@ -19,6 +19,7 @@ void printBoard(Tile board[8][8]);
 void movePiece(int ini_col,int ini_row, int fin_col,int fin_row, Tile board[8][8]);
 void askForMove(Tile board[8][8]);
 int translate(char input);
+void checkForPromotion(int col, int row, Tile board[8][8]);
 
 int main()
 {
@@ -143,8 +144,6 @@ void setupBoard(Tile board[8][8])
 
 void printBoard(Tile board[8][8])
 {
-    cout << " 1 2 3 4 5 6 7 8" << endl;
-    cout << "-----------------" << endl;
     for(int i = 0; i < 8; i++)
     {
 	cout << '|';
@@ -176,6 +175,10 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
 	}
 	board[fin_row][fin_col].setPiece(board[ini_row][ini_col].occupier);
 	board[ini_row][ini_col].removePiece();
+	if(board[fin_row][fin_col].occupier->getSymbol() == 'P')
+	{
+	    checkForPromotion(fin_col, fin_row, board);
+	}
     }
     else 
     {
@@ -213,4 +216,18 @@ int translate(char input)
 	ascii_value = tolower(input) - '0' - 49;
     }
     return ascii_value;
+}
+
+void checkForPromotion(int col, int row, Tile board[8][8])
+{
+    if(board[row][col].occupier->getColor() == 'W'
+	    && row == 7)
+    {
+	board[row][col].occupier->promotion(col, row, board);
+    }
+    else if(board[row][col].occupier->getColor() == 'B'
+	    && row == 0)
+    {
+	board[row][col].occupier->promotion(col, row, board);
+    }
 }

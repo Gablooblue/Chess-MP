@@ -3,6 +3,10 @@
 
 #include "Piece.h"
 #include "Tile.h"
+#include "Queen.h"
+#include "Rook.h"
+#include "Bishop.h"
+#include "Knight.h"
 using namespace std;
 
 
@@ -16,7 +20,8 @@ class Pawn: public Piece
 	bool canEat(int col, int row, Tile board[8][8]);
 	bool canMove(int col, int row, Tile board[8][8]);
 	bool hasMoved();
-	bool setMoved();
+	void setMoved();
+	void promotion(int col, int row, Tile board[8][8]);
     private: 
 	bool moved;
 };
