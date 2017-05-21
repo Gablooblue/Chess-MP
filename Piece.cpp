@@ -60,3 +60,5 @@ void Piece::setCoordinates(int col, int row)
     x = col;
     y = row;
 }
+
+

@@ -20,6 +20,7 @@ void movePiece(int ini_col,int ini_row, int fin_col,int fin_row, Tile board[8][8
 void askForMove(Tile board[8][8]);
 int translate(char input);
 void checkForPromotion(int col, int row, Tile board[8][8]);
+bool isKingInCheck(char color, Tile board[8][8]);
 
 int main()
 {
@@ -166,7 +167,7 @@ void printBoard(Tile board[8][8])
 void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
 {
     cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row << endl;
-    if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board)) 
+    if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board))
     {
 	if(board[fin_row][fin_col].occupier != NULL)
 	{
@@ -175,6 +176,12 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
 	}
 	board[fin_row][fin_col].setPiece(board[ini_row][ini_col].occupier);
 	board[ini_row][ini_col].removePiece();
+	if(isKingInCheck(board[fin_row][fin_col].occupier->getColor(), board))
+	{
+	    cout << "King is in check" << endl;
+	    board[ini_row][ini_col].setPiece(board[fin_row][fin_col].occupier);
+	    board[fin_row][fin_col].removePiece();
+	}
 	if(board[fin_row][fin_col].occupier->getSymbol() == 'P')
 	{
 	    checkForPromotion(fin_col, fin_row, board);
@@ -203,6 +210,11 @@ void askForMove(Tile board[8][8])
     getline(cin, place);
     fin_y = translate(place[0]);
     fin_x = translate(place[1]);
+    if(ini_y >=8 || ini_x >= 8 || fin_x >= 8 || fin_y >= 8)
+    {
+	cout << "Please input valid coordinates" << endl;
+	return;
+    }
     movePiece(ini_x, ini_y, fin_x, fin_y, board);
 }
 
@@ -230,4 +242,26 @@ void checkForPromotion(int col, int row, Tile board[8][8])
     {
 	board[row][col].occupier->promotion(col, row, board);
     }
+}
+bool isKingInCheck(char color, Tile board[8][8])
+{
+    int x, y;
+    for(int i = 0; i < 8; i++)
+    {
+	for(int j = 0; j < 8; j++)
+	{
+	    if(board[i][j].occupier->getSymbol() == 'K' 
+		    && board[i][j].occupier->getColor() == color)
+	    {
+		x = board[i][j].occupier->getXPosition();
+		y = board[i][j].occupier->getYPosition();
+		i = 8; //just to break the loop
+		break;
+	    }
+
+	}
+    }
+
+    return board[y][x].occupier->isInCheck(board);
+
 }

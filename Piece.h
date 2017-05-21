@@ -21,6 +21,7 @@ class Piece
 	char getSymbol();
 	char getColor();
 	void promotion(int col, int row, Tile board[8][8]);
+	bool isInCheck(Tile board[8][8]);
     protected:
 	int x, y, value;
 	char color, symbol;
