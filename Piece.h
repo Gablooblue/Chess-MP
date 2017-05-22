@@ -22,9 +22,12 @@ class Piece
 	char getColor();
 	void promotion(int col, int row, Tile board[8][8]);
 	bool isInCheck(Tile board[8][8]);
+	void setMoved();
+	bool hasMoves(Tile board[8][8]);
     protected:
 	int x, y, value;
 	char color, symbol;
+	bool moved;
 };
 
 #endif

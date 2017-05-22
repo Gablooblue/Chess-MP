@@ -21,6 +21,8 @@ void askForMove(Tile board[8][8]);
 int translate(char input);
 void checkForPromotion(int col, int row, Tile board[8][8]);
 bool isKingInCheck(char color, Tile board[8][8]);
+void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* eaten, Tile board[8][8]);
+bool checkIfMated(char color, Tile board[8][8]);
 
 int main()
 {
@@ -150,6 +152,7 @@ void printBoard(Tile board[8][8])
 void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
 {
     char color;
+    bool valid = false;
     Piece* eaten;
     bool ate = false;
     cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row << endl;
@@ -175,12 +178,7 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
 		if(board[fin_row][fin_col].occupier->getColor() == color)
 		{
 		    //Undo move
-		    board[ini_row][ini_col].setPiece(board[fin_row][fin_col].occupier);
-		    board[fin_row][fin_col].removePiece();
-		    if(ate)
-		    {
-			board[fin_row][fin_col].setPiece(eaten);
-		    }
+		    undo(ini_col, ini_row, fin_col, fin_row, ate, eaten, board);
 		}
 	    }
 	    color = 'B';
@@ -190,7 +188,6 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
 	{
 	    checkForPromotion(fin_col, fin_row, board);
 	}
-
     }
     else 
     {
@@ -269,3 +266,60 @@ bool isKingInCheck(char color, Tile board[8][8])
     return board[y][x].occupier->isInCheck(board);
 
 }
+
+void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* eaten, Tile board[8][8])
+{
+    board[ini_row][ini_col].setPiece(board[fin_row][fin_col].occupier);
+    board[fin_row][fin_col].removePiece();
+    if(ate)
+    {
+	board[fin_row][fin_col].setPiece(eaten);
+    }
+    if(board[ini_row][ini_col].occupier->getSymbol() == 'P')
+    {
+	if(board[ini_row][ini_col].occupier->getColor() == 'W')
+	{
+	    if(board[ini_row][ini_col].occupier->getYPosition() != 6)
+	    {
+		board[ini_row][ini_col].occupier->setMoved();
+	    }
+	}
+	else
+	{
+	    if(board[ini_row][ini_col].occupier->getYPosition() != 1)
+	    {
+		board[ini_row][ini_col].occupier->setMoved();
+	    }
+	}
+    }
+}
+
+bool checkIfMated(char color, Tile board[8][8])
+{
+    //TODO
+    /*for(int i = 0; i < 8; i++)
+    {
+	for(int j = 0; j < 8; j++)
+	{
+	    if(board[i][j].occupier != NULL 
+		    && board[i][j].occupier->hasMoves(board)) 
+	    {
+		for(int x = 0; x < 8; x++)
+		{
+		    for(int y = 0; y < 8; y++)
+		    {
+			if(board[i][j].occupier->isMoveValid(x, y, board))
+			{
+			    board[y][x].setPiece(board[i][j].occupier);
+			    board[y][x].removePiece();
+			    if(isKingInCheck(color, board))
+			    {
+			    }
+			}
+		    }
+		}
+	    }
+	}
+    }*/
+}
+

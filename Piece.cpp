@@ -84,3 +84,22 @@ bool Piece::isInCheck(Tile board[8][8])
 	}
     }
 }
+
+void Piece::setMoved()
+{
+    moved = true;
+}
+
+bool Piece::hasMoves(Tile board[8][8])
+{
+    for(int i = 0; i < 8; i++)
+    {
+	for(int j = 0; j < 8; j++)
+	{
+	    if(board[y][x].occupier->isMoveValid(i, j, board))
+	    {
+		return true;
+	    }
+	}
+    }
+}
