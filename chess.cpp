@@ -66,6 +66,7 @@ void setupBoard(Tile board[8][8])
 {
     int i, j;
     char c;
+    //Making the center pieces value higher
     for(i = 0; i < 8; i++)
     {
 	for(j = 0; j < 8; j++)
@@ -81,7 +82,7 @@ void setupBoard(Tile board[8][8])
     //Place Pawns
     for(i = 1 , j = 0; j < 8; j++)
     {
-	board[i][j].makePiece('P', 'W',board);
+	board[i][j].makePiece('P', 'B',board);
     }
     for(i = 6, j = 0; j < 8; j++)
     {
@@ -148,13 +149,16 @@ void printBoard(Tile board[8][8])
 
 void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
 {
-    char eaten, color;
+    char color;
+    Piece* eaten;
+    bool ate = false;
     cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row << endl;
     if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board))
     {
 	if(board[fin_row][fin_col].occupier != NULL)
 	{
-	    eaten = board[fin_row][fin_col].occupier->getSymbol();
+	    ate = true;
+	    eaten = board[fin_row][fin_col].occupier;
 	    board[fin_row][fin_col].removePiece();
 	    cout << "Piece eaten" << endl;
 	    
@@ -173,12 +177,16 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
 		    //Undo move
 		    board[ini_row][ini_col].setPiece(board[fin_row][fin_col].occupier);
 		    board[fin_row][fin_col].removePiece();
+		    if(ate)
+		    {
+			board[fin_row][fin_col].setPiece(eaten);
+		    }
 		}
-		return;
 	    }
 	    color = 'B';
 	}
-	if(board[fin_row][fin_col].occupier->getSymbol() == 'P')
+	if(board[fin_row][fin_col].occupier != NULL
+		&&board[fin_row][fin_col].occupier->getSymbol() == 'P')
 	{
 	    checkForPromotion(fin_col, fin_row, board);
 	}
