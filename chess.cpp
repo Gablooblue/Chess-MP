@@ -81,39 +81,25 @@ void setupBoard(Tile board[8][8])
     //Place Pawns
     for(i = 1 , j = 0; j < 8; j++)
     {
-	Pawn* newPawn = new Pawn;
-	newPawn->setColor('B');
-	board[i][j].setPiece(newPawn);
+	board[i][j].makePiece('P', 'W',board);
     }
     for(i = 6, j = 0; j < 8; j++)
     {
-	Pawn* newPawn = new Pawn;
-	newPawn->setColor('W');
-	board[i][j].setPiece(newPawn);
+	board[i][j].makePiece('P', 'W',board);
     }
     //Place Queens
-    Queen* newBQueen = new Queen;
-    Queen* newWQueen = new Queen;
-    newWQueen->setColor('W');
-    newBQueen->setColor('B');
-    board[0][4].setPiece(newBQueen);
-    board[7][4].setPiece(newWQueen);
+    board[0][4].makePiece('Q', 'B',board);
+    board[7][4].makePiece('Q', 'W',board);
     //Place Kings
-    King* newBKing = new King;
-    King* newWKing = new King;
-    newBKing->setColor('B');
-    newWKing->setColor('W');
-    board[0][3].setPiece(newBKing);
-    board[7][3].setPiece(newWKing);
+    board[0][3].makePiece('K', 'B',board);
+    board[7][3].makePiece('K', 'W',board);
     //Place Bishops
     c = 'B';
     for(i = 0; i < 8; i+=7)
     {
 	for(j = 2; j < 6;j+=3)
 	{
-	    Bishop* newBishop = new Bishop;
-	    newBishop->setColor(c);
-	    board[i][j].setPiece(newBishop);
+	    board[i][j].makePiece('B', c,board);
 	}
 	c = 'W';
     }
@@ -123,9 +109,7 @@ void setupBoard(Tile board[8][8])
     {
 	for(j = 0; j < 8;j+=7)
 	{
-	    Rook* newRook = new Rook;
-	    newRook->setColor(c);
-	    board[i][j].setPiece(newRook);
+	    board[i][j].makePiece('R', c,board);
 	}
 	c = 'W';
     }
@@ -135,9 +119,7 @@ void setupBoard(Tile board[8][8])
     {
 	for(j = 1; j < 7;j+=5)
 	{
-	    Knight* newKnight = new Knight;
-	    newKnight->setColor(c);
-	    board[i][j].setPiece(newKnight);
+	    board[i][j].makePiece('H', c,board);
 	}
 	c = 'W';
     }
@@ -166,26 +148,41 @@ void printBoard(Tile board[8][8])
 
 void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
 {
+    char eaten, color;
     cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row << endl;
     if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board))
     {
 	if(board[fin_row][fin_col].occupier != NULL)
 	{
+	    eaten = board[fin_row][fin_col].occupier->getSymbol();
 	    board[fin_row][fin_col].removePiece();
 	    cout << "Piece eaten" << endl;
+	    
 	}
 	board[fin_row][fin_col].setPiece(board[ini_row][ini_col].occupier);
 	board[ini_row][ini_col].removePiece();
-	if(isKingInCheck(board[fin_row][fin_col].occupier->getColor(), board))
+
+	color = 'W';
+	for(int i = 0; i < 2; i++)	
 	{
-	    cout << "King is in check" << endl;
-	    board[ini_row][ini_col].setPiece(board[fin_row][fin_col].occupier);
-	    board[fin_row][fin_col].removePiece();
+	    if(isKingInCheck(color, board))
+	    {
+		cout << "King is in check" << endl;
+		if(board[fin_row][fin_col].occupier->getColor() == color)
+		{
+		    //Undo move
+		    board[ini_row][ini_col].setPiece(board[fin_row][fin_col].occupier);
+		    board[fin_row][fin_col].removePiece();
+		}
+		return;
+	    }
+	    color = 'B';
 	}
 	if(board[fin_row][fin_col].occupier->getSymbol() == 'P')
 	{
 	    checkForPromotion(fin_col, fin_row, board);
 	}
+
     }
     else 
     {
@@ -250,18 +247,17 @@ bool isKingInCheck(char color, Tile board[8][8])
     {
 	for(int j = 0; j < 8; j++)
 	{
-	    if(board[i][j].occupier->getSymbol() == 'K' 
+	    if(board[i][j].occupier != NULL 
+		    && board[i][j].occupier->getSymbol() == 'K' 
 		    && board[i][j].occupier->getColor() == color)
 	    {
 		x = board[i][j].occupier->getXPosition();
 		y = board[i][j].occupier->getYPosition();
-		i = 8; //just to break the loop
+		i = 8; //to break the loop
 		break;
 	    }
-
 	}
     }
-
     return board[y][x].occupier->isInCheck(board);
 
 }

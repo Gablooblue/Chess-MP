@@ -3,10 +3,6 @@
 
 #include "Piece.h"
 #include "Tile.h"
-#include "Queen.h"
-#include "Rook.h"
-#include "Bishop.h"
-#include "Knight.h"
 using namespace std;
 
 

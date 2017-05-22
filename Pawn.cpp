@@ -1,4 +1,8 @@
 #include "Pawn.h"
+#include "Queen.h"
+#include "Rook.h"
+#include "Bishop.h"
+#include "Knight.h"
 
 #include <iostream>
 #include <cmath>

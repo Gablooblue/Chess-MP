@@ -18,6 +18,7 @@ class Tile
 	int getValue();
 	bool isOccupied();
 	Piece* occupier;
+	void makePiece(char piece, char color, Tile board[8][8]);
     private:
 	int x,y, value;
 	

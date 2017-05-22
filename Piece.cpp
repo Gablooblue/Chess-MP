@@ -62,3 +62,25 @@ void Piece::setCoordinates(int col, int row)
 }
 
 
+void Piece::promotion(int col, int row, Tile board[8][8])
+{
+
+}
+
+bool Piece::isInCheck(Tile board[8][8])
+{
+    for(int i = 0; i < 8; i++)
+    {
+	for(int j = 0; j < 8; j++)
+	{
+	    if(board[i][j].occupier != NULL 
+		    && board[i][j].occupier->getColor() != color)
+	    {
+		if(board[i][j].occupier->isMoveValid(x, y, board))
+		{
+		    return true; 
+		}
+	    }
+	}
+    }
+}
