@@ -90,6 +90,11 @@ void Piece::setMoved()
     moved = true;
 }
 
+bool Piece::hasMoved()
+{
+    return moved;
+}
+
 bool Piece::hasMoves(Tile board[8][8])
 {
     for(int i = 0; i < 8; i++)

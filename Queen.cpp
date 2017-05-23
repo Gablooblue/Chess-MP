@@ -16,10 +16,75 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
     float rise, run;
     rise = y - row;
     run = x - col;
-    float slope = abs(rise/run);
-    if(run == 0)
+    if(run == 0 || rise == 0)
     {
 	return false;
+    }
+    rise = abs(rise);
+    run = abs(run);
+    float slope = abs(rise/run);
+    int delta;
+    delta = rise > 1 ? rise - 1 : rise;
+   
+    //checking lower-left
+    if(row > y && col < x)
+    {
+	for(int i = 0; i < delta; i++)	
+	{
+	    cout << "Checking " << col - i << " " << row - i << endl;
+	    if(row - i >= 8 || row - i < 0 || col - i >= 8 || col - i < 0)
+		continue;
+	    if(board[row - i][col - i].isOccupied() && board[row - i][col - i].occupier->getColor() == color)
+	    {
+		cout << "Space occupied" << endl;
+		return false;
+	    }
+	}
+    }
+    //checking lower-right
+    else if(row > y && col > x )
+    {
+	for(int i = 0; i < delta; i++)	
+	{
+	    cout << "Checking " << col + i << " " << row - i << endl;
+	    if(row - i >= 8 || row - i < 0 || col + i >= 8 || col + i < 0)
+		continue;
+	    if(board[row - i][col + i].isOccupied() && board[row - i][col + i].occupier->getColor() == color)
+	    {
+		cout << "Space occupied" << endl;
+		return false;
+	    }
+	}
+    }
+    //checking upper-left
+    else if(row < y && col < x)
+    {
+	for(int i = 0; i < delta; i++)	
+	{
+	    cout << "Checking " << col - i << " " << row + i << endl;
+	    if(row + i >= 8 || row + i < 0 || col - i >= 8 || col - i < 0)
+		continue;
+	    if(board[row + i][col - i].isOccupied() && board[row + i][col - i].occupier->getColor() == color)
+	    {
+		cout << "Space occupied" << endl;
+		return false;
+	    }
+	}
+    }
+    //checking upper-right
+    else if(row < y && col > x)
+    {
+	for(int i = 0; i < delta; i++)	
+	{
+	    cout << "Checking " << col + i << " " << row + i << endl;
+	    if(row + i >= 8 || row + i < 0 || col + i >= 8 || col + i < 0)
+		continue;
+	    if(board[row + i][col + i].isOccupied() && board[row + i][col + i].occupier->getColor() == color)
+	    {
+		cout << "Space occupied" << endl;
+		return false;
+	    }
+	}
     }
     return(slope == 1.0);
 }

@@ -24,6 +24,7 @@ class Piece
 	bool isInCheck(Tile board[8][8]);
 	void setMoved();
 	bool hasMoves(Tile board[8][8]);
+	bool hasMoved();
     protected:
 	int x, y, value;
 	char color, symbol;

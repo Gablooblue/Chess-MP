@@ -7,10 +7,18 @@ Rook::Rook()
 {
     value = 5;
     symbol = 'R';
+    moved = false;
 }
 
 bool Rook::isMoveValid(int col, int row, Tile board[8][8])
 {
-    return (checkHorizontal(col, row ,board) ||
-    checkVertical(col, row, board));
+    if(checkHorizontal(col, row ,board) ||
+    checkVertical(col, row, board))
+    {
+	if(!moved)
+	{
+	    moved = true;
+	}
+	return true;
+    }
 }

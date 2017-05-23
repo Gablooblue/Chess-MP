@@ -45,7 +45,7 @@ bool Pawn::canMove(int col, int row, Tile board[8][8])
     cout << "deltaY: " <<  deltaY << endl;
     if(color == 'W' && col == x)
     {
-	if(!moved)
+	if(!moved && deltaY == 1 || deltaY == 2)
 	{
 	    moved = true;
 	    return(deltaY == 1|| deltaY == 2);
@@ -57,7 +57,7 @@ bool Pawn::canMove(int col, int row, Tile board[8][8])
     }
     else if(color == 'B' && col == x)
     {
-	if(!moved)
+	if(!moved && deltaY == 1|| deltaY == 2)
 	{
 	    moved = true;
 	    return(deltaY == 1 || deltaY == 2);
