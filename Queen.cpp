@@ -26,21 +26,37 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 
 bool Queen::checkVertical(int col, int row, Tile board[8][8])
 {
-    /*
     int delta;
     delta = abs(row-y);
-    cout << "Delta: " << delta << endl;
-    for(int i = 0; i < delta; i++ )
+    delta = delta > 1 ? delta - 1 : delta;
+    if(row > y)
     {
-	cout << "Checking " << col << " " << row + i;
-	if(row + i >= 8)
-	    continue;
-	if(board[row + i][col].isOccupied() && board[row + i][col].occupier->getColor() == color)
+	for(int i = 0; i < delta; i++ )
 	{
-	    cout << "Space occupied" << endl;
-	    return false;
+	    cout << "Checking " << col << " " << row + i << endl;
+	    if(row + i >= 8 || row + i < 0)
+		continue;
+	    if(board[row + i][col].isOccupied() && board[row + i][col].occupier->getColor() == color)
+	    {
+		cout << "Space occupied" << endl;
+		return false;
+	    }
 	}
-    }*/
+    }
+    else if(y > row)
+    {
+	for(int i = 0; i < delta; i++ )
+	{
+	    cout << "Checking " << col << " " << row - i << endl;
+	    if(row - i >= 8 || row - i < 0)
+		continue;
+	    if(board[row - i][col].isOccupied() && board[row - i][col].occupier->getColor() == color)
+	    {
+		cout << "Space occupied" << endl;
+		return false;
+	    }
+	}
+    }
 
     //TODO pls fix this shit idk why my mind isn't working ty
     return(x == col);
@@ -48,6 +64,37 @@ bool Queen::checkVertical(int col, int row, Tile board[8][8])
 
 bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 {
+    int delta;
+    delta = abs(col - x);
+    delta = delta > 1 ? delta - 1 : delta;
+    if(col > x)
+    {
+	for(int i = 0; i < delta; i++ )
+	{
+	    cout << "Checking " << col + i << " " << row << endl;
+	    if(col + i >= 8 || col + i < 0)
+		continue;
+	    if(board[row][col + i].isOccupied() && board[row][col + i].occupier->getColor() == color)
+	    {
+		cout << "Space occupied" << endl;
+		return false;
+	    }
+	}
+    }
+    else if(x > col)
+    {
+	for(int i = 0; i < delta; i++ )
+	{
+	    cout << "Checking " << col - i << " " << row << endl;
+	    if(col - i >= 8 || col - i < 0)
+		continue;
+	    if(board[row][col - i].isOccupied() && board[row][col - i].occupier->getColor() == color)
+	    {
+		cout << "Space occupied" << endl;
+		return false;
+	    }
+	}
+    }
     return(y == row);
 }
 
