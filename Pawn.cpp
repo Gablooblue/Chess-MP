@@ -27,7 +27,6 @@ int Pawn::getYPosition()
 }
 bool Pawn::isMoveValid(int col, int row, Tile board[8][8])
 {
-    cout << "Checking pawn" << x << y << endl;
     if(board[row][col].isOccupied())
     {
 	return (canEat(col, row, board));

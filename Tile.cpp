@@ -13,7 +13,6 @@ using namespace std;
 Tile::Tile()
 {
     occupier = NULL;
-    value = 0;
 }
 
 void Tile::setPiece(Piece* p)

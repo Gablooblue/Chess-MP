@@ -122,7 +122,6 @@ void Piece::promotion(int col, int row, Tile board[8][8])
 
 bool Piece::isInCheck(Tile board[8][8])
 {
-    cout << "Checking if king is in check" << endl;
     for(int i = 0; i < 8; i++)
     {
 	for(int j = 0; j < 8; j++)

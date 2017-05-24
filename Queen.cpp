@@ -261,6 +261,5 @@ bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 
 bool Queen::isMoveValid(int col,int row, Tile board[8][8])
 {
-    cout << "Checking Queen" << x << y << endl;
     return (checkDiagonal(col, row, board) || checkHorizontal(col, row, board) || checkVertical(col, row, board));
 }

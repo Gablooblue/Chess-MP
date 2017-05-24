@@ -39,7 +39,6 @@ bool King::isMoveValid(int col, int row, Tile board[8][8])
 {
     int deltaX, deltaY;
 
-    cout << "checking king" << x << y << endl;
     deltaX = col - x != 0 ? abs(col -x) : 0;
     deltaY = row - y != 0 ? abs(row -y) : 0;
 

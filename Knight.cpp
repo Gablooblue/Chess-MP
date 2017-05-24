@@ -14,7 +14,6 @@ Knight::Knight()
 
 bool Knight::isMoveValid(int col, int row, Tile board[8][8])
 {
-    cout << "Checking Knight" << x << y << endl;
     return(checkMove(col, row, board));
 }
 

@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 
 using namespace std;
@@ -26,9 +27,9 @@ bool isKingInCheck(char color, Tile board[8][8]);
 void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* eaten, Tile board[8][8]);
 bool isCheckmated(char color, Tile board[8][8]);
 bool isStalemated(Tile board[8][8]);
-void ai(int col, int row, Tile board[8][8]);
+bool backtrack(int col, int row, Tile board[8][8]);
 int pointCalculator(int col, int row, int j, int i, Tile board[8][8]);
-void ai(int col, int row, Tile board[8][8]);
+bool ai(Tile board[8][8]);
 
 int main()
 {
@@ -68,8 +69,14 @@ void start()
     
     do
     {
-	if(askForMove(turn, board))
+	if(turn % 2 == 1)
 	{
+	    askForMove(turn, board);
+	    turn++;
+	}
+	else 
+	{
+	    ai(board);
 	    turn++;
 	}
 
@@ -121,6 +128,10 @@ void setupBoard(Tile board[8][8])
 		i == 4 && j ==4)
 	    {
 		board[i][j].setValue(2);
+	    }
+	    else
+	    {
+		board[i][j].setValue(1);
 	    }
 	}
     }
@@ -205,7 +216,9 @@ bool movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
     bool valid = false;
     Piece* eaten;
     bool ate = false;
-    cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row << endl;
+    cout << "------------";
+    cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row ;
+    cout << "------------" << endl;
     if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board))
     {
 	if(board[fin_row][fin_col].occupier != NULL)
@@ -441,27 +454,104 @@ int pointCalculator(int col, int row, int j, int i, Tile board[8][8])
 {
     int points = 0;
     char color = board[row][col].occupier->getColor();
-    if(board[row][col].occupier->isMoveValid(j, i, board))
+    char enemy_color;
+    Piece* eaten = NULL;
+    bool ate = false;
+    enemy_color = color == 'W' ? 'B' : 'W';
+    if(color == 'B')
     {
-	//If it can eat 
-	if(board[i][j].isOccupied()
-		&& board[i][j].occupier->getColor() != color)
+	if(board[row][col].occupier->isMoveValid(j, i, board))
 	{
-	    points += board[i][j].occupier->getValue();
+	    //If it can eat 
+	    cout << "How";
+	    if(board[i][j].isOccupied()
+		    && board[i][j].occupier->getColor() != color)
+	    {
+		points += board[i][j].occupier->getValue();
+	    }
+	    points += board[i][j].getValue();
+	
+	    cout << "Far";
+	    if(board[i][j].isOccupied())
+	    {
+		ate = true;
+		eaten = board[i][j].occupier;
+		board[i][j].removePiece();
+	    }
+	    board[i][j].setPiece(board[row][col].occupier);
+	    board[row][col].removePiece();
+	    
+	    cout << "Ill";
+	    if(isKingInCheck(color,board))
+	    {
+		undo(col, row, j, i,ate, eaten, board);
+		return 0;
+	    }
+	    if(isKingInCheck(enemy_color,board))
+	    {
+		points += 10000000;
+	    }
+	    if(board[i][j].occupier->isInCheck(board))
+	    {
+		points -= board[i][j].occupier->getValue();
+	    }
+
+	    cout << "Go";
+	    undo(col, row, j, i,ate, eaten, board);
 	}
-	points += board[i][j].getValue();
     }
     return points;
 }
 
-void ai(int col, int row, Tile board[8][8])
+bool backtrack(int col, int row, Tile board[8][8])
 {
+   int points = 0;
    for(int i = 0; i < 8; i++)    
     {
 	for(int j = 0; j < 8; j++)
-	{
+	{ 	  
+	    points = pointCalculator(col, row, j, i, board);
+	    if(points >= 3)
+	    {
+		movePiece(col, row, j, i, board);
+		return true;
+	    }
 	}
     }
+   return false;
 }
 
-
+bool ai(Tile board[8][8])
+{
+    int x, y, i, j;
+    bool end = false;
+    for(i = 0; i < 8; i++)
+    {
+	for(j = 0; j < 8; j++)
+	{
+	    if(board[j][i].isOccupied())
+	    {
+		if(backtrack(i, j, board))
+		{
+		    return true;
+		}
+	    }
+	}
+    }
+    for(;;)
+    {
+	i = rand() % 8;
+	j = rand() % 8;
+	x = rand() % 8;
+	y = rand() % 8;
+	if(board[j][i].isOccupied() && board[j][i].occupier->getColor() == 'B')
+	{
+	    if(board[j][i].occupier->isMoveValid(x,y,board))
+	    {
+		movePiece(i, j, x,y,board);
+		return true;
+	    }
+	}
+    }
+    return true;
+}
