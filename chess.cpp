@@ -17,14 +17,13 @@ void start();
 void setupBoard(Tile board[8][8]);
 void printBoard(Tile board[8][8]);
 void movePiece(int ini_col,int ini_row, int fin_col,int fin_row, Tile board[8][8]);
-void askForMove(Tile board[8][8]);
+void askForMove(int turn, Tile board[8][8]);
 int translate(char input);
 void checkForPromotion(int col, int row, Tile board[8][8]);
 bool isKingInCheck(char color, Tile board[8][8]);
 void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* eaten, Tile board[8][8]);
 bool isCheckmated(char color, Tile board[8][8]);
 bool isStalemated(Tile board[8][8]);
-void kingTest(Tile board[8][8]);
 
 
 int main()
@@ -37,7 +36,8 @@ void menu()
     int input;
     do
     {
-	cout << "[1] Start"
+	cout << "[1] Start" 
+	     << endl
 	     << "[4] Quit"
 	     << endl;
 	cin >> input;
@@ -57,37 +57,45 @@ void menu()
 void start()
 {
     bool end = false;
+    int turn = 1;
     Tile board[8][8];
     setupBoard(board);
-    //kingTest(board);
     printBoard(board);
     
     do
     {
-	askForMove(board);
+	askForMove(turn, board);
 
 	if(isStalemated(board))
 	{
 	    end = true;
+	    cout << "Stalemate" << endl;
 	}
 	if(isKingInCheck('W', board))
 	{
-	    cout << "------------Checking for CMW---------------" << endl;
 	    if(isCheckmated('W', board))
 	    {
 		end = true;
+		cout << "Checkmate"
+		    << endl
+		    << "Black Wins"
+		    << endl;
 	    }
 	}
 	else if(isKingInCheck('B', board))
 	{
-	    cout << "-------------Checking for CMB---------------" << endl;
 	    if(isCheckmated('B', board))
 	    {
 		end = true;
+		cout << "Checkmate"
+		    << endl
+		    << "White wins"
+		    << endl;
 	    }
 	}
 
 	printBoard(board);
+	turn++;
     }
     while(!end);
 }
@@ -231,17 +239,32 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
     }
 }
 
-void askForMove(Tile board[8][8])
+void askForMove(int turn, Tile board[8][8])
 {
+    char mover;
+    if(turn % 2 == 1) 
+    {
+	mover = 'W';
+    }
+    else
+    {
+	mover = 'B';
+    }
     int ini_x, ini_y, fin_x, fin_y;
     string select, place;
     cout << "Pick a piece to move: ";
     getline(cin, select);
     ini_x = translate(select[0]);
     ini_y = translate(select[1]);
+    
     if(board[ini_y][ini_x].occupier == NULL)
     {
 	cout << "No piece in the space" << endl;
+	return;
+    }
+    if(board[ini_y][ini_x].occupier->getColor() != mover)
+    {
+	cout << "It's " << mover << "'s turn" << endl;
 	return;
     }
     cout << "Pick where to move the piece: ";
@@ -360,11 +383,8 @@ bool isCheckmated(char color, Tile board[8][8])
 				eaten = board[y][x].occupier;
 				board[y][x].removePiece();
 			    }
-			    cout << "where";
 			    board[y][x].setPiece(board[i][j].occupier);
-			    cout << "Where";
 			    board[i][j].removePiece();
-			    cout << "WHERE";
 			    
 			    if(isKingInCheck(color, board))
 			    {
