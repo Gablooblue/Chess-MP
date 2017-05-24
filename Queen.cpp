@@ -31,7 +31,6 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 	{
 	    for(int i = 1; i < delta; i++)	
 	    {
-		cout << "Checking " << y - i << x - i << endl;
 		if(y - i >= 8 || y - i < 0 || x - i >= 8 || x - i < 0)
 		    continue;
 		if(board[y - i][x - i].isOccupied()) 
@@ -57,7 +56,6 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 	{
 	    for(int i = 1; i < delta; i++)	
 	    {
-		cout << "Checking " << y - i << x + i << endl;
 		if(y - i >= 8 || y - i < 0 || x + i >= 8 || x + i < 0)
 		    continue;
 		if(board[y - i][x + i].isOccupied()) 
@@ -83,7 +81,6 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 	{
 	    for(int i = 1; i < delta; i++)	
 	    {
-		cout << "Checking " << y + i << x - i << endl;
 		if(y + i >= 8 || y + i < 0 || x - i >= 8 || x - i < 0)
 		    continue;
 		if(board[y + i][x - i].isOccupied()) 
@@ -109,7 +106,6 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 	{
 	    for(int i = 1; i < delta; i++)	
 	    {
-		cout << "Checking " << y + i << x + i << endl;
 		if(y + i >= 8 || y + i < 0 || x + i >= 8 || x + i < 0)
 		    continue;
 		if(board[y + i][x + i].isOccupied()) 
@@ -137,7 +133,6 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 
 bool Queen::checkVertical(int col, int row, Tile board[8][8])
 {
-    cout << "Checking vertical" << endl;
     int delta;
     if (row - y == 0)
     {
@@ -151,7 +146,6 @@ bool Queen::checkVertical(int col, int row, Tile board[8][8])
 	{
 	    for(int i = 1; i < delta; i++ )
 	    {
-		cout << "Checking " << y + i << x << endl;
 		if( y + i >= 8 || y + i < 0)
 		    continue;
 		if(board[y + i][x].isOccupied()) 
@@ -177,7 +171,6 @@ bool Queen::checkVertical(int col, int row, Tile board[8][8])
 	{
 	    for(int i = 1; i < delta; i++ )
 	    {
-		cout << "Checking " << y - i << x << endl;
 		if( y- i >= 8 || y - i < 0)
 		    continue;
 		if(board[y - i][x].isOccupied()) 
@@ -205,7 +198,6 @@ bool Queen::checkVertical(int col, int row, Tile board[8][8])
 
 bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 {
-    cout << "Checking horizontal" << endl;
     int delta;
     if(col - x == 0)
 	return false;
@@ -218,7 +210,6 @@ bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 	{
 	    for(int i = 1; i < delta; i++ )
 	    {
-	    cout << "Checking " << y  << x + i<< endl;
 		if( x+ i >= 8 || x + i < 0)
 		    continue;
 		if(board[y][x + i].isOccupied()) 
@@ -243,7 +234,6 @@ bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 	{
 	    for(int i = 1; i < delta; i++ )
 	    {
-		cout << "Checking " << y  << x - i<< endl;
 		if(x - i >= 8 || x - i < 0)
 		    continue;
 		if(board[y][x - i].isOccupied()) 

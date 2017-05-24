@@ -25,6 +25,7 @@ class Piece
 	void setMoved();
 	bool hasMoves(Tile board[8][8]);
 	bool hasMoved();
+	int getValue();
     protected:
 	int x, y, value;
 	char color, symbol;

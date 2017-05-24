@@ -164,3 +164,8 @@ bool Piece::hasMoves(Tile board[8][8])
 	}
     }
 }
+
+int Piece::getValue()
+{
+    return value;
+}

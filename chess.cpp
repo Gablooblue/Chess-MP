@@ -12,19 +12,23 @@
 
 using namespace std;
 
+#define LIMIT 3
+
 void menu();
 void start();
 void setupBoard(Tile board[8][8]);
 void printBoard(Tile board[8][8]);
-void movePiece(int ini_col,int ini_row, int fin_col,int fin_row, Tile board[8][8]);
-void askForMove(int turn, Tile board[8][8]);
+bool movePiece(int ini_col,int ini_row, int fin_col,int fin_row, Tile board[8][8]);
+bool askForMove(int turn, Tile board[8][8]);
 int translate(char input);
 void checkForPromotion(int col, int row, Tile board[8][8]);
 bool isKingInCheck(char color, Tile board[8][8]);
 void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* eaten, Tile board[8][8]);
 bool isCheckmated(char color, Tile board[8][8]);
 bool isStalemated(Tile board[8][8]);
-
+void ai(int col, int row, Tile board[8][8]);
+int pointCalculator(int col, int row, int j, int i, Tile board[8][8]);
+void ai(int col, int row, Tile board[8][8]);
 
 int main()
 {
@@ -36,7 +40,7 @@ void menu()
     int input;
     do
     {
-	cout << "[1] Start" 
+	cout << "[1] Start"
 	     << endl
 	     << "[4] Quit"
 	     << endl;
@@ -64,7 +68,11 @@ void start()
     
     do
     {
-	askForMove(turn, board);
+	if(askForMove(turn, board))
+	{
+	    turn++;
+	}
+
 
 	if(isStalemated(board))
 	{
@@ -95,7 +103,6 @@ void start()
 	}
 
 	printBoard(board);
-	turn++;
     }
     while(!end);
 }
@@ -171,7 +178,7 @@ void printBoard(Tile board[8][8])
     for(int i = 0; i < 8; i++)
     {
 	cout << i+1;
-    cout << '|';
+	cout << '|';
 	for(int j = 0; j < 8; j++)
 	{
 
@@ -192,13 +199,12 @@ void printBoard(Tile board[8][8])
 
 }
 
-void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
+bool movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
 {
     char color;
     bool valid = false;
     Piece* eaten;
     bool ate = false;
-    int px, py;
     cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row << endl;
     if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board))
     {
@@ -236,10 +242,11 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
     else 
     {
 	cout << "Move invalid" << endl;
+	return false;
     }
 }
 
-void askForMove(int turn, Tile board[8][8])
+bool askForMove(int turn, Tile board[8][8])
 {
     char mover;
     if(turn % 2 == 1) 
@@ -260,12 +267,12 @@ void askForMove(int turn, Tile board[8][8])
     if(board[ini_y][ini_x].occupier == NULL)
     {
 	cout << "No piece in the space" << endl;
-	return;
+	return false;
     }
     if(board[ini_y][ini_x].occupier->getColor() != mover)
     {
 	cout << "It's " << mover << "'s turn" << endl;
-	return;
+	return false;
     }
     cout << "Pick where to move the piece: ";
     getline(cin, place);
@@ -274,9 +281,10 @@ void askForMove(int turn, Tile board[8][8])
     if(ini_y >=8 || ini_x >= 8 || fin_x >= 8 || fin_y >= 8)
     {
 	cout << "Please input valid coordinates" << endl;
-	return;
+	return false;
     }
-    movePiece(ini_x, ini_y, fin_x, fin_y, board);
+    if(!movePiece(ini_x, ini_y, fin_x, fin_y, board))
+	return false;
 }
 
 int translate(char input)
@@ -389,14 +397,12 @@ bool isCheckmated(char color, Tile board[8][8])
 			    if(isKingInCheck(color, board))
 			    {
 				cout << "King is in check" << endl;
-				//if(board[y][x].occupier->getColor() == color)
-				//{
-				    //Undo move
-				    undo(j, i, x, y , ate, eaten, board);
-				//}
+				//Undo move
+				undo(j, i, x, y , ate, eaten, board);
 			    }
 			    else
 			    {
+				undo(j, i, x, y , ate, eaten, board);
 				return false;
 			    }
 			}
@@ -429,6 +435,33 @@ bool isStalemated(Tile board[8][8])
     color = 'B';
     }
     return true;
+}
+
+int pointCalculator(int col, int row, int j, int i, Tile board[8][8])
+{
+    int points = 0;
+    char color = board[row][col].occupier->getColor();
+    if(board[row][col].occupier->isMoveValid(j, i, board))
+    {
+	//If it can eat 
+	if(board[i][j].isOccupied()
+		&& board[i][j].occupier->getColor() != color)
+	{
+	    points += board[i][j].occupier->getValue();
+	}
+	points += board[i][j].getValue();
+    }
+    return points;
+}
+
+void ai(int col, int row, Tile board[8][8])
+{
+   for(int i = 0; i < 8; i++)    
+    {
+	for(int j = 0; j < 8; j++)
+	{
+	}
+    }
 }
 
 
