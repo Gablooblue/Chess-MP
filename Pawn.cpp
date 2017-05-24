@@ -40,11 +40,15 @@ bool Pawn::isMoveValid(int col, int row, Tile board[8][8])
 
 bool Pawn::canMove(int col, int row, Tile board[8][8])
 {
+    if(y - row == 0)
+    {
+	return false;
+    }
     int deltaY = 0;
-    deltaY = abs(y - row );
+    deltaY = abs(y - row);
     if(color == 'W' && col == x)
     {
-	if(!moved && deltaY == 1 || deltaY == 2)
+	if(!moved)
 	{
 	    moved = true;
 	    return(deltaY == 1|| deltaY == 2);
@@ -56,7 +60,7 @@ bool Pawn::canMove(int col, int row, Tile board[8][8])
     }
     else if(color == 'B' && col == x)
     {
-	if(!moved && deltaY == 1|| deltaY == 2)
+	if(!moved)
 	{
 	    moved = true;
 	    return(deltaY == 1 || deltaY == 2);
@@ -70,9 +74,13 @@ bool Pawn::canMove(int col, int row, Tile board[8][8])
 
 bool Pawn::canEat(int col, int row, Tile board[8][8])
 {
+    if(col - x == 0 || row - y == 0)
+    {
+	return false;
+    }
     float deltaX = abs(col -x);
     float deltaY = abs(row-y);
-    if(deltaX == 0)
+    if(deltaX == 0 || deltaY == 0)
     {
 	return false;
     }

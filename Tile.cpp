@@ -29,8 +29,8 @@ void Tile::removePiece()
 
 void Tile::setCoordinates(int col, int row)
 {
-    y = col;
-    x = row;
+    x = col;
+    y = row;
 }
 
 int Tile::getXCoordinates()

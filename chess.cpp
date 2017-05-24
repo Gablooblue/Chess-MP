@@ -26,6 +26,7 @@ bool isCheckmated(char color, Tile board[8][8]);
 bool isStalemated(Tile board[8][8]);
 void kingTest(Tile board[8][8]);
 
+
 int main()
 {
     menu();
@@ -69,8 +70,9 @@ void start()
 	{
 	    end = true;
 	}
-	/*if(isKingInCheck('W', board))
+	if(isKingInCheck('W', board))
 	{
+	    cout << "------------Checking for CMW---------------" << endl;
 	    if(isCheckmated('W', board))
 	    {
 		end = true;
@@ -78,11 +80,12 @@ void start()
 	}
 	else if(isKingInCheck('B', board))
 	{
+	    cout << "-------------Checking for CMB---------------" << endl;
 	    if(isCheckmated('B', board))
 	    {
 		end = true;
 	    }
-	}*/
+	}
 
 	printBoard(board);
     }
@@ -98,7 +101,7 @@ void setupBoard(Tile board[8][8])
     {
 	for(j = 0; j < 8; j++)
 	{
-	    board[i][j].setCoordinates(i, j);
+	    board[i][j].setCoordinates(j, i);
 	    if(i == 3 && j == 3 || i == 3 && j == 4 || i == 4 && j == 3 || 
 		i == 4 && j ==4)
 	    {
@@ -155,11 +158,15 @@ void setupBoard(Tile board[8][8])
 
 void printBoard(Tile board[8][8])
 {
+    cout << "  A  B  C  D  E  F  G  H" << endl;
+    cout << "---------------------------" << endl;
     for(int i = 0; i < 8; i++)
     {
-	cout << '|';
+	cout << i+1;
+    cout << '|';
 	for(int j = 0; j < 8; j++)
 	{
+
 	    if(board[i][j].occupier != NULL)
 
 		cout << board[i][j].occupier->getColor() << board[i][j].occupier->getSymbol();
@@ -167,11 +174,14 @@ void printBoard(Tile board[8][8])
 		cout << "  ";
 	    cout << '|';
 	}
+	cout << i+1;
 	cout << endl;
-	cout << "-----------------";
+	cout << "---------------------------";
 	cout << endl;
-
     }
+    cout << "  A  B  C  D  E  F  G  H" << endl;
+
+
 }
 
 void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8][8])
@@ -180,6 +190,7 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
     bool valid = false;
     Piece* eaten;
     bool ate = false;
+    int px, py;
     cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row << endl;
     if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board))
     {
@@ -260,12 +271,12 @@ int translate(char input)
 void checkForPromotion(int col, int row, Tile board[8][8])
 {
     if(board[row][col].occupier->getColor() == 'W'
-	    && row == 7)
+	    && row == 0)
     {
 	board[row][col].occupier->promotion(col, row, board);
     }
     else if(board[row][col].occupier->getColor() == 'B'
-	    && row == 0)
+	    && row == 7)
     {
 	board[row][col].occupier->promotion(col, row, board);
     }
@@ -294,12 +305,14 @@ bool isKingInCheck(char color, Tile board[8][8])
 
 void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* eaten, Tile board[8][8])
 {
+    cout << "UNDOING MOVE" << endl;
     board[ini_row][ini_col].setPiece(board[fin_row][fin_col].occupier);
     board[fin_row][fin_col].removePiece();
     if(ate)
     {
 	board[fin_row][fin_col].setPiece(eaten);
     }
+    //If the piece is a pawn and already moved
     if(board[ini_row][ini_col].occupier->getSymbol() == 'P')
     {
 	if(board[ini_row][ini_col].occupier->getColor() == 'W')
@@ -321,54 +334,58 @@ void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* e
 
 bool isCheckmated(char color, Tile board[8][8])
 {
-    /*Piece* eaten;
+    Piece* eaten;
     bool ate = false;
     for(int i = 0; i < 8; i++)
     {
 	for(int j = 0; j < 8; j++)
 	{
-	    if(board[i][j].occupier != NULL 
-		    && board[i][j].occupier->hasMoves(board)) 
+	    ate = false;
+	    eaten = NULL;
+	    if(board[i][j].isOccupied()
+		    && board[i][j].occupier->getColor() == color
+		    ) 
 	    {
-		for(int x = 0; x < 8; x++)
+		for(int y = 0; y < 8; y++)
 		{
-		    for(int y = 0; y < 8; y++)
+		    for(int x = 0; x < 8; x++)
 		    {
+			ate = false;
+			eaten = NULL;
 			if(board[i][j].occupier->isMoveValid(x, y, board))
 			{
-			    if(board[y][x].occupier != NULL)
+			    if(board[y][x].isOccupied())
 			    {
 				ate = true;
 				eaten = board[y][x].occupier;
 				board[y][x].removePiece();
-				cout << "Piece eaten" << endl;
-				
 			    }
+			    cout << "where";
 			    board[y][x].setPiece(board[i][j].occupier);
+			    cout << "Where";
 			    board[i][j].removePiece();
-
-			    for(int i = 0; i < 2; i++)	
+			    cout << "WHERE";
+			    
+			    if(isKingInCheck(color, board))
 			    {
-				if(isKingInCheck(color, board))
-				{
-				    cout << "King is in check" << endl;
-				    if(board[y][x].occupier->getColor() == color)
-				    {
-					//Undo move
-					undo(j, i, x,y , ate, eaten, board);
-				    }
-				}
-				else
-				{
-				    return false;
-				}
+				cout << "King is in check" << endl;
+				//if(board[y][x].occupier->getColor() == color)
+				//{
+				    //Undo move
+				    undo(j, i, x, y , ate, eaten, board);
+				//}
+			    }
+			    else
+			    {
+				return false;
 			    }
 			}
 		    }
 		}
 	    }
 	}
-    }*/
+    }
+    return true;
 }
 
 bool isStalemated(Tile board[8][8])
@@ -394,25 +411,4 @@ bool isStalemated(Tile board[8][8])
     return true;
 }
 
-void kingTest(Tile board[8][8])
-{
-    int i, j;
-    char c;
-    //Making the center pieces value higher
-    for(i = 0; i < 8; i++)
-    {
-	for(j = 0; j < 8; j++)
-	{
-	    board[i][j].setCoordinates(i, j);
-	    if(i == 3 && j == 3 || i == 3 && j == 4 || i == 4 && j == 3 || 
-		i == 4 && j ==4)
-	    {
-		board[i][j].setValue(2);
-	    }
-	}
-    }
-    King* newKing = new King;
 
-    board[3][3].setPiece(newKing);
-    board[3][3].occupier->setColor('B');
-}

@@ -13,7 +13,7 @@ Queen::Queen()
 
 bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 {
-    float rise, run;
+    int rise, run, delta;
     rise = y - row;
     run = x - col;
     if(run == 0 || rise == 0)
@@ -22,137 +22,251 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
     }
     rise = abs(rise);
     run = abs(run);
-    float slope = abs(rise/run);
-    int delta;
-    delta = rise > 1 ? rise - 1 : rise;
-   
-    //checking lower-left
-    if(row > y && col < x)
+    delta = rise > 1 ? rise  : rise + 1;
+     
+    if(rise == run)
     {
-	for(int i = 0; i < delta; i++)	
+	//checking upper-left
+	if(row < y && col < x)
 	{
-	    if(y - i >= 8 || y - i < 0 || x - i >= 8 || x - i < 0)
-		continue;
-	    if(board[y - i][x - i].isOccupied() && board[y - i][x - i].occupier->getColor() == color)
+	    for(int i = 1; i < delta; i++)	
 	    {
-		cout << "Space occupied" << endl;
-		return false;
+		cout << "Checking " << y - i << x - i << endl;
+		if(y - i >= 8 || y - i < 0 || x - i >= 8 || x - i < 0)
+		    continue;
+		if(board[y - i][x - i].isOccupied()) 
+		{
+		    if(board[y - i][x - i].occupier->getColor() == color)
+		    {
+			cout << "Space occupied" << endl;
+			return false;
+		    }
+		    else
+		    {
+			if( y - i != row || x - i != col )
+			{
+			    cout << "Space obstructed" << endl;
+			    return false;
+			}
+		    }
+		}
+	    }
+	}
+	//checking upper-right
+	else if(row < y && col > x )
+	{
+	    for(int i = 1; i < delta; i++)	
+	    {
+		cout << "Checking " << y - i << x + i << endl;
+		if(y - i >= 8 || y - i < 0 || x + i >= 8 || x + i < 0)
+		    continue;
+		if(board[y - i][x + i].isOccupied()) 
+		{
+		    if(board[y - i][x + i].occupier->getColor() == color)
+		    {
+			cout << "Space occupied" << endl;
+			return false;
+		    }
+		    else
+		    {
+			if( y - i != row || x + i != col )
+			{
+			    cout << "Space obstructed" << endl;
+			    return false;
+			}
+		    }
+		}
+	    }
+	}
+	//checking lower-left
+	else if(row > y && x > col)
+	{
+	    for(int i = 1; i < delta; i++)	
+	    {
+		cout << "Checking " << y + i << x - i << endl;
+		if(y + i >= 8 || y + i < 0 || x - i >= 8 || x - i < 0)
+		    continue;
+		if(board[y + i][x - i].isOccupied()) 
+		{
+		    if(board[y + i][x - i].occupier->getColor() == color)
+		    {
+			cout << "Space occupied" << endl;
+			return false;
+		    }
+		    else
+		    {
+			if( y + i != row || x - i != col )
+			{
+			    cout << "Space obstructed" << endl;
+			    return false;
+			}
+		    }
+		}
+	    }
+	}
+	//checking lower-right
+	else if(row > y && col > x)
+	{
+	    for(int i = 1; i < delta; i++)	
+	    {
+		cout << "Checking " << y + i << x + i << endl;
+		if(y + i >= 8 || y + i < 0 || x + i >= 8 || x + i < 0)
+		    continue;
+		if(board[y + i][x + i].isOccupied()) 
+		{
+		    if(board[y + i][x + i].occupier->getColor() == color)
+		    {
+			cout << "Space occupied" << endl;
+			return false;
+		    }
+		    else
+		    {
+			if( y + i != row || x + i != col )
+			{
+			    cout << "Space obstructed" << endl;
+			    return false;
+			}
+		    }
+		}
 	    }
 	}
     }
-    //checking lower-right
-    else if(row > y && col > x )
-    {
-	for(int i = 0; i < delta; i++)	
-	{
-	    if(y - i >= 8 || y - i < 0 || x + i >= 8 || x + i < 0)
-		continue;
-	    if(board[y - i][x + i].isOccupied() && board[y - i][x + i].occupier->getColor() == color)
-	    {
-		cout << "Space occupied" << endl;
-		return false;
-	    }
-	}
-    }
-    //checking upper-left
-    else if(row < y && x < x)
-    {
-	for(int i = 0; i < delta; i++)	
-	{
-	    if(y + i >= 8 || y + i < 0 || x - i >= 8 || x - i < 0)
-		continue;
-	    if(board[y + i][x - i].isOccupied() && board[y + i][x - i].occupier->getColor() == color)
-	    {
-		cout << "Space occupied" << endl;
-		return false;
-	    }
-	}
-    }
-    //checking upper-right
-    else if(row < y && col > x)
-    {
-	for(int i = 0; i < delta; i++)	
-	{
-	    if(y + i >= 8 || y + i < 0 || x + i >= 8 || x + i < 0)
-		continue;
-	    if(board[y + i][x + i].isOccupied() && board[y + i][x + i].occupier->getColor() == color)
-	    {
-		cout << "Space occupied" << endl;
-		return false;
-	    }
-	}
-    }
-    return(slope == 1.0);
+    else
+	return false;
 }
 
 bool Queen::checkVertical(int col, int row, Tile board[8][8])
 {
+    cout << "Checking vertical" << endl;
     int delta;
+    if (row - y == 0)
+    {
+	return false;
+    }
     delta = abs(row-y);
-    delta = delta > 1 ? delta - 1 : delta;
-    if(row > y)
+    delta = delta > 1 ? delta : delta + 1;
+    if(x == col)
     {
-	for(int i = 0; i < delta; i++ )
+	if(row > y)
 	{
-	    if(row + i >= 8 || row + i < 0)
-		continue;
-	    if(board[y + i][x].isOccupied() && board[y + i][x].occupier->getColor() == color)
+	    for(int i = 1; i < delta; i++ )
 	    {
-		cout << "Space occupied" << endl;
-		return false;
+		cout << "Checking " << y + i << x << endl;
+		if( y + i >= 8 || y + i < 0)
+		    continue;
+		if(board[y + i][x].isOccupied()) 
+		{
+		    if(board[y + i][x].occupier->getColor() == color)
+		    {
+			cout << "Space occupied" << endl;
+			return false;
+		    }
+		    else
+		    {
+			if( y + i != row )
+			{
+			    cout << "Space obstructed" << endl;
+			    return false;
+			}
+		    }
+		}
+		
+	    }
+	}
+	else if(row < y )
+	{
+	    for(int i = 1; i < delta; i++ )
+	    {
+		cout << "Checking " << y - i << x << endl;
+		if( y- i >= 8 || y - i < 0)
+		    continue;
+		if(board[y - i][x].isOccupied()) 
+		{
+		    if(board[y - i][x].occupier->getColor() == color)
+		    {
+			cout << "Space occupied" << endl;
+			return false;
+		    }
+		    else
+		    {
+			if( y - i != row )
+			{
+			    cout << "Space obstructed" << endl;
+			    return false;
+			}
+		    }
+		}
 	    }
 	}
     }
-    else if(y > row)
-    {
-	for(int i = 0; i < delta; i++ )
-	{
-	    if(row - i >= 8 || row - i < 0)
-		continue;
-	    if(board[y - i][x].isOccupied() && board[y - i][x].occupier->getColor() == color)
-	    {
-		cout << "Space occupied" << endl;
-		return false;
-	    }
-	}
-    }
-
-    //TODO pls fix this shit idk why my mind isn't working ty
-    return(x == col);
+    else
+	return false;
 }
 
 bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 {
+    cout << "Checking horizontal" << endl;
     int delta;
+    if(col - x == 0)
+	return false;
+
     delta = abs(col - x);
-    delta = delta > 1 ? delta - 1 : delta;
-    if(col > x)
+    delta = delta > 1 ? delta  : delta + 1;
+    if(y == row)
     {
-	for(int i = 0; i < delta; i++ )
+	if(col > x)
 	{
-	    if(col + i >= 8 || col + i < 0)
-		continue;
-	    if(board[y][x + i].isOccupied() && board[y][x + i].occupier->getColor() == color)
+	    for(int i = 1; i < delta; i++ )
 	    {
-		cout << "Space occupied" << endl;
-		return false;
+	    cout << "Checking " << y  << x + i<< endl;
+		if( x+ i >= 8 || x + i < 0)
+		    continue;
+		if(board[y][x + i].isOccupied()) 
+		{
+		    if(board[y][x + i].occupier->getColor() == color)
+		    {
+			cout << "Space occupied" << endl;
+			return false;
+		    }
+		    else
+		    {
+			if( x + i != col)
+			{
+			    cout << "Space obstructed" << endl;
+			    return false;
+			}
+		    }
+		}
+	    }
+	}
+	else if(x > col)
+	{
+	    for(int i = 1; i < delta; i++ )
+	    {
+		cout << "Checking " << y  << x - i<< endl;
+		if(x - i >= 8 || x - i < 0)
+		    continue;
+		if(board[y][x - i].isOccupied()) 
+		{
+		    if(board[y][x - i].occupier->getColor() == color)
+		    {
+			cout << "Space occupied" << endl;
+			return false;
+		    }
+		    else
+		    {
+			if( x - i != col)
+			{
+			    cout << "Space obstructed" << endl;
+			    return false;
+			}
+		    }
+		}
 	    }
 	}
     }
-    else if(x > col)
-    {
-	for(int i = 0; i < delta; i++ )
-	{
-	    if(col - i >= 8 || col - i < 0)
-		continue;
-	    if(board[y][x - i].isOccupied() && board[y][x - i].occupier->getColor() == color)
-	    {
-		cout << "Space occupied" << endl;
-		return false;
-	    }
-	}
-    }
-    return(y == row);
+    else
+	return false;
 }
 
 bool Queen::isMoveValid(int col,int row, Tile board[8][8])
