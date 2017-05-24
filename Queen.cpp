@@ -37,14 +37,14 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 		{
 		    if(board[y - i][x - i].occupier->getColor() == color)
 		    {
-			cout << "Space occupied" << endl;
+			
 			return false;
 		    }
 		    else
 		    {
 			if( y - i != row || x - i != col )
 			{
-			    cout << "Space obstructed" << endl;
+			    
 			    return false;
 			}
 		    }
@@ -62,14 +62,14 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 		{
 		    if(board[y - i][x + i].occupier->getColor() == color)
 		    {
-			cout << "Space occupied" << endl;
+			
 			return false;
 		    }
 		    else
 		    {
 			if( y - i != row || x + i != col )
 			{
-			    cout << "Space obstructed" << endl;
+			    
 			    return false;
 			}
 		    }
@@ -87,14 +87,14 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 		{
 		    if(board[y + i][x - i].occupier->getColor() == color)
 		    {
-			cout << "Space occupied" << endl;
+			
 			return false;
 		    }
 		    else
 		    {
 			if( y + i != row || x - i != col )
 			{
-			    cout << "Space obstructed" << endl;
+			    
 			    return false;
 			}
 		    }
@@ -112,14 +112,14 @@ bool Queen::checkDiagonal(int col, int row, Tile board[8][8])
 		{
 		    if(board[y + i][x + i].occupier->getColor() == color)
 		    {
-			cout << "Space occupied" << endl;
+			
 			return false;
 		    }
 		    else
 		    {
 			if( y + i != row || x + i != col )
 			{
-			    cout << "Space obstructed" << endl;
+			    
 			    return false;
 			}
 		    }
@@ -152,14 +152,14 @@ bool Queen::checkVertical(int col, int row, Tile board[8][8])
 		{
 		    if(board[y + i][x].occupier->getColor() == color)
 		    {
-			cout << "Space occupied" << endl;
+			
 			return false;
 		    }
 		    else
 		    {
 			if( y + i != row )
 			{
-			    cout << "Space obstructed" << endl;
+			    
 			    return false;
 			}
 		    }
@@ -177,14 +177,14 @@ bool Queen::checkVertical(int col, int row, Tile board[8][8])
 		{
 		    if(board[y - i][x].occupier->getColor() == color)
 		    {
-			cout << "Space occupied" << endl;
+			
 			return false;
 		    }
 		    else
 		    {
 			if( y - i != row )
 			{
-			    cout << "Space obstructed" << endl;
+			    
 			    return false;
 			}
 		    }
@@ -216,14 +216,14 @@ bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 		{
 		    if(board[y][x + i].occupier->getColor() == color)
 		    {
-			cout << "Space occupied" << endl;
+			
 			return false;
 		    }
 		    else
 		    {
 			if( x + i != col)
 			{
-			    cout << "Space obstructed" << endl;
+			    
 			    return false;
 			}
 		    }
@@ -240,14 +240,14 @@ bool Queen::checkHorizontal(int col, int row, Tile board[8][8])
 		{
 		    if(board[y][x - i].occupier->getColor() == color)
 		    {
-			cout << "Space occupied" << endl;
+			
 			return false;
 		    }
 		    else
 		    {
 			if( x - i != col)
 			{
-			    cout << "Space obstructed" << endl;
+			    
 			    return false;
 			}
 		    }

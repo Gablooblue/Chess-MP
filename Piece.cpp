@@ -155,7 +155,6 @@ bool Piece::hasMoves(Tile board[8][8])
     {
 	for(int j = 0; j < 8; j++)
 	{
-	    cout << "Checking if " << board[y][x].occupier->getSymbol()<< x << y<<  " has moves" << endl;
 	    if(board[y][x].occupier->isMoveValid(i, j, board))
 	    {
 		return true;

@@ -349,7 +349,6 @@ bool isKingInCheck(char color, Tile board[8][8])
 
 void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* eaten, Tile board[8][8])
 {
-    cout << "UNDOING MOVE" << endl;
     board[ini_row][ini_col].setPiece(board[fin_row][fin_col].occupier);
     board[fin_row][fin_col].removePiece();
     if(ate)
@@ -463,7 +462,6 @@ int pointCalculator(int col, int row, int j, int i, Tile board[8][8])
 	if(board[row][col].occupier->isMoveValid(j, i, board))
 	{
 	    //If it can eat 
-	    cout << "How";
 	    if(board[i][j].isOccupied()
 		    && board[i][j].occupier->getColor() != color)
 	    {
@@ -471,7 +469,6 @@ int pointCalculator(int col, int row, int j, int i, Tile board[8][8])
 	    }
 	    points += board[i][j].getValue();
 	
-	    cout << "Far";
 	    if(board[i][j].isOccupied())
 	    {
 		ate = true;
@@ -481,7 +478,6 @@ int pointCalculator(int col, int row, int j, int i, Tile board[8][8])
 	    board[i][j].setPiece(board[row][col].occupier);
 	    board[row][col].removePiece();
 	    
-	    cout << "Ill";
 	    if(isKingInCheck(color,board))
 	    {
 		undo(col, row, j, i,ate, eaten, board);
@@ -496,7 +492,6 @@ int pointCalculator(int col, int row, int j, int i, Tile board[8][8])
 		points -= board[i][j].occupier->getValue();
 	    }
 
-	    cout << "Go";
 	    undo(col, row, j, i,ate, eaten, board);
 	}
     }
