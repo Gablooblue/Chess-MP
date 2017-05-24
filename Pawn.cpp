@@ -27,6 +27,7 @@ int Pawn::getYPosition()
 }
 bool Pawn::isMoveValid(int col, int row, Tile board[8][8])
 {
+    cout << "Checking pawn" << x << y << endl;
     if(board[row][col].isOccupied())
     {
 	return canEat(col, row, board);
@@ -39,10 +40,8 @@ bool Pawn::isMoveValid(int col, int row, Tile board[8][8])
 
 bool Pawn::canMove(int col, int row, Tile board[8][8])
 {
-    cout << "color: " << color << endl;
     int deltaY = 0;
     deltaY = abs(y - row );
-    cout << "deltaY: " <<  deltaY << endl;
     if(color == 'W' && col == x)
     {
 	if(!moved && deltaY == 1 || deltaY == 2)
@@ -72,15 +71,12 @@ bool Pawn::canMove(int col, int row, Tile board[8][8])
 bool Pawn::canEat(int col, int row, Tile board[8][8])
 {
     float deltaX = abs(col -x);
-    cout << "deltax: " << deltaX << endl;
     float deltaY = abs(row-y);
-    cout << "deltay: " << deltaY << endl;
     if(deltaX == 0)
     {
 	return false;
     }
     float slope = deltaY/deltaX;
-    cout << "Slope: " << slope << endl;
     if(slope == 1.0)
     { 
 	if(board[row][col].isOccupied());

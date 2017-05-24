@@ -1,4 +1,5 @@
 #include "Knight.h"
+#include "Tile.h"
 #include <iostream>
 #include <cmath>
 
@@ -13,6 +14,7 @@ Knight::Knight()
 
 bool Knight::isMoveValid(int col, int row, Tile board[8][8])
 {
+    cout << "Checking Knight" << x << y << endl;
     return(checkMove(col, row, board));
 }
 
@@ -20,16 +22,17 @@ bool Knight::checkMove(int col, int row, Tile board[8][8])
 {
    float rise, run;
    rise = abs(this->y - row);
-   cout << "Rise: " << rise << endl << y << "-" << row;
    run = abs(this->x - col);
-   cout << "Run: " << run << endl;
-   if(run == 0)
+   if(rise > 2 || run > 2 || run == 0 || rise == 0)
    {
        return false;
    }
+   if(board[row][col].isOccupied() && board[row][col].occupier->getColor() == this->color)
+    {
+       return false;
+    }
    float slope = abs(rise/run);
-   cout << "slope: " << slope << endl;
-   return(slope == 0.5 || slope == 2 );
+   return(slope == 0.5 || slope == 2);
 }
 
 

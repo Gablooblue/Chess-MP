@@ -38,16 +38,36 @@ bool King::isInCheck(Tile board[8][8])
 bool King::isMoveValid(int col, int row, Tile board[8][8])
 {
     int deltaX, deltaY;
-    deltaX = abs(col - x);
-    deltaY = abs(row - y);
 
+    cout << "checking king" << x << y << endl;
+    deltaX = col - x != 0 ? abs(col -x) : 0;
+    deltaY = row - y != 0 ? abs(row -y) : 0;
+
+    cout << "Delta" << deltaX << deltaY << endl;
+    if (deltaX == 0 && deltaY == 0  )
+	return false;
+    if(deltaY > 1 || deltaX > 1)
+	return false;
+    
     if(deltaX == 1 || deltaX == 0 && deltaY == 1|| deltaY == 0)
     {
-	if(!moved)
+	if(board[row][col].isOccupied() && board[row][col].occupier->getColor() == color)
 	{
-	    moved = true;
+	    return false;
+	}	
+	else
+	{
+	    if(!moved)
+	    {
+		moved = true;
+	    }
+	    return true;
 	}
-	return true;
+    }
+   
+    else
+    {
+	return false;
     }
 
 }

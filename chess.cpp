@@ -22,8 +22,9 @@ int translate(char input);
 void checkForPromotion(int col, int row, Tile board[8][8]);
 bool isKingInCheck(char color, Tile board[8][8]);
 void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* eaten, Tile board[8][8]);
-bool checkIfMated(char color, Tile board[8][8]);
+bool isCheckmated(char color, Tile board[8][8]);
 bool isStalemated(Tile board[8][8]);
+void kingTest(Tile board[8][8]);
 
 int main()
 {
@@ -46,7 +47,7 @@ void menu()
 		    break;
 	    case 4: break;
 		    break;
-	    default: cout << "Choose a valid option";
+	    default: cout << "Choose a valid option" << endl;
 	}
     }
     while(input > 4 || input < 1);
@@ -57,6 +58,7 @@ void start()
     bool end = false;
     Tile board[8][8];
     setupBoard(board);
+    //kingTest(board);
     printBoard(board);
     
     do
@@ -67,20 +69,20 @@ void start()
 	{
 	    end = true;
 	}
-	if(isKingInCheck('W', board))
+	/*if(isKingInCheck('W', board))
 	{
-	    if(checkIfMated('W', board))
+	    if(isCheckmated('W', board))
 	    {
 		end = true;
 	    }
 	}
 	else if(isKingInCheck('B', board))
 	{
-	    if(checkIfMated('B', board))
+	    if(isCheckmated('B', board))
 	    {
 		end = true;
 	    }
-	}
+	}*/
 
 	printBoard(board);
     }
@@ -214,7 +216,7 @@ void movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
     }
     else 
     {
-	cout << "Move invalid";
+	cout << "Move invalid" << endl;
     }
 }
 
@@ -317,7 +319,7 @@ void undo(int ini_col, int ini_row, int fin_col, int fin_row, bool ate, Piece* e
     }
 }
 
-bool checkIfMated(char color, Tile board[8][8])
+bool isCheckmated(char color, Tile board[8][8])
 {
     /*Piece* eaten;
     bool ate = false;
@@ -378,13 +380,39 @@ bool isStalemated(Tile board[8][8])
 	{
 	    for(int j = 0; j < 8; j++)
 	    {
-		if(board[i][j].occupier->getColor() == color && board[i][j].occupier->hasMoves(board))
+		if(board[i][j].isOccupied())
 		{
-		    return false;
+		    if(board[i][j].occupier->getColor() == color && board[i][j].occupier->hasMoves(board))
+		    {
+			return false;
+		    }
 		}
 	    }
 	}
     color = 'B';
     }
+    return true;
 }
 
+void kingTest(Tile board[8][8])
+{
+    int i, j;
+    char c;
+    //Making the center pieces value higher
+    for(i = 0; i < 8; i++)
+    {
+	for(j = 0; j < 8; j++)
+	{
+	    board[i][j].setCoordinates(i, j);
+	    if(i == 3 && j == 3 || i == 3 && j == 4 || i == 4 && j == 3 || 
+		i == 4 && j ==4)
+	    {
+		board[i][j].setValue(2);
+	    }
+	}
+    }
+    King* newKing = new King;
+
+    board[3][3].setPiece(newKing);
+    board[3][3].occupier->setColor('B');
+}

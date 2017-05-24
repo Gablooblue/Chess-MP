@@ -12,6 +12,7 @@ Rook::Rook()
 
 bool Rook::isMoveValid(int col, int row, Tile board[8][8])
 {
+    cout << "checking rook" << endl;
     if(checkHorizontal(col, row ,board) ||
     checkVertical(col, row, board))
     {
