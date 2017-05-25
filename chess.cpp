@@ -39,11 +39,20 @@ int main()
 void menu()
 {
     int input;
+    system("clear");
+    cout <<
+    "\t\t\t     | |                 " <<endl<<
+    "\t\t\t  ___| |__   ___  ___ ___" <<endl<<
+    "\t\t\t / __| '_ \\ / _ \\/ __/ __|"<<endl<<
+    "\t\t\t| (__| | | |  __/\\__ \\__ \\"<<endl<<
+    "\t\t\t \\___|_| |_|\\___||___/___/"<<endl;
+
     do
     {
-	cout << "[1] Start"
+	cout << endl
+	     <<"\t\t\t\t[1] Start"
 	     << endl
-	     << "[4] Quit"
+	     << "\t\t\t\t[4] Quit"
 	     << endl;
 	cin >> input;
 	getchar();
@@ -217,7 +226,7 @@ bool movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
     Piece* eaten;
     bool ate = false;
     cout << "------------";
-    cout << "Moving " << ini_col << ini_row << "to" << fin_col << fin_row ;
+    cout << "Moving " << ini_col + 1 << ini_row + 1 << "to" << fin_col + 1 << fin_row + 1 ;
     cout << "------------" << endl;
     if(board[ini_row][ini_col].occupier->isMoveValid(fin_col, fin_row, board))
     {
