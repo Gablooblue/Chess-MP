@@ -9,9 +9,16 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 #include <string>
 
 using namespace std;
+
+WORD GetConsoleTextAttribute (HANDLE hCon){
+  CONSOLE_SCREEN_BUFFER_INFO con_info;
+  GetConsoleScreenBufferInfo(hCon, &con_info);
+  return con_info.wAttributes;
+}
 
 #define LIMIT 3
 
@@ -80,8 +87,14 @@ void start()
     {
 	if(turn % 2 == 1)
 	{
-	    askForMove(turn, board);
-	    turn++;
+	    for(;;)
+	    {
+		if(askForMove(turn, board))
+		{
+		    turn++;
+		    break;
+		}
+	    }
 	}
 	else 
 	{
@@ -193,28 +206,60 @@ void setupBoard(Tile board[8][8])
 
 void printBoard(Tile board[8][8])
 {
-    cout << "  A  B  C  D  E  F  G  H" << endl;
-    cout << "---------------------------" << endl;
+    cout << "_________________________________________________" << endl;
+
     for(int i = 0; i < 8; i++)
     {
-	cout << i+1;
-	cout << '|';
-	for(int j = 0; j < 8; j++)
+
+    
+    for(int j = 0; j < 8; j++)
 	{
+        cout <<'|';
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    const int saved_colors = GetConsoleTextAttribute(hConsole);
+	    if(board[i][j].occupier != NULL && board[i][j].occupier->getColor()=='B'){
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		cout << "  " << board[i][j].occupier->getSymbol() << "  ";
+        SetConsoleTextAttribute(hConsole, saved_colors);
+            if(j==7)
+                cout << '|';
+	    }
+	    else if(board[i][j].occupier != NULL){
+            cout << "  " << board[i][j].occupier->getSymbol() << "  ";
+            if(j==7)
+                cout << '|';
+	    }
+	    else{
+		cout << "     ";
+		if(j==7)
+            cout << '|';
+	    }
 
-	    if(board[i][j].occupier != NULL)
-
-		cout << board[i][j].occupier->getColor() << board[i][j].occupier->getSymbol();
-	    else
-		cout << "  ";
-	    cout << '|';
 	}
-	cout << i+1;
+    cout << endl;
+    for(int j = 0; j < 8; j++)
+	{
+        cout << '|';
+	    cout << "     ";
+	    if(j==7)
+            cout << '|';
+	}
+        cout << i+1;
+	    cout << endl;
+
+    for(int j = 0; j < 8; j++)
+	{
+        cout << '|';
+	    cout << "_____";
+	    if(j==7)
+            cout << '|';
+	}
+
 	cout << endl;
-	cout << "---------------------------";
-	cout << endl;
+
     }
-    cout << "  A  B  C  D  E  F  G  H" << endl;
+        cout << "   A     B     C     D     E     F     G     H" << endl;
+   
 
 
 }
@@ -251,6 +296,7 @@ bool movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
 		{
 		    //Undo move
 		    undo(ini_col, ini_row, fin_col, fin_row, ate, eaten, board);
+		    return false;
 		}
 	    }
 	    color = 'B';
@@ -266,6 +312,7 @@ bool movePiece(int ini_col, int ini_row ,int fin_col ,int fin_row, Tile board[8]
 	cout << "Move invalid" << endl;
 	return false;
     }
+    return true;
 }
 
 bool askForMove(int turn, Tile board[8][8])
@@ -305,7 +352,9 @@ bool askForMove(int turn, Tile board[8][8])
 	cout << "Please input valid coordinates" << endl;
 	return false;
     }
-    if(!movePiece(ini_x, ini_y, fin_x, fin_y, board))
+    if(movePiece(ini_x, ini_y, fin_x, fin_y, board))
+	return true;
+    else
 	return false;
 }
 
